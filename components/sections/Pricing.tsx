@@ -88,12 +88,18 @@ export function Pricing() {
               ))}
             </ul>
 
-            <Button
-              variant={tier.highlighted ? "primary" : "secondary"}
-              className="w-full"
-            >
-              {tier.cta}
-            </Button>
+            {tier.cta === "npx create-tellet" ? (
+              <code className="block w-full text-center rounded-lg bg-bg-primary border border-border px-4 py-3 text-sm font-mono text-text-primary">
+                $ {tier.cta}
+              </code>
+            ) : (
+              <Button
+                variant={tier.highlighted ? "primary" : "secondary"}
+                className="w-full"
+              >
+                {tier.cta}
+              </Button>
+            )}
           </motion.div>
         ))}
       </div>

@@ -2,12 +2,11 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { SocialProof } from "@/components/sections/SocialProof";
-import { ProblemPromise } from "@/components/sections/ProblemPromise";
+import { TerminalDemo } from "@/components/sections/TerminalDemo";
 import { Features } from "@/components/sections/Features";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Pricing } from "@/components/sections/Pricing";
 import { FinalCTA } from "@/components/sections/FinalCTA";
-import { TellyWidget } from "@/components/chat/TellyWidget";
 
 export default function Home() {
   return (
@@ -16,14 +15,13 @@ export default function Home() {
       <main>
         <Hero />
         <SocialProof />
-        <ProblemPromise />
+        <TerminalDemo />
         <Features />
         <HowItWorks />
         <Pricing />
         <FinalCTA />
       </main>
       <Footer />
-      <TellyWidget />
     </>
   );
 }

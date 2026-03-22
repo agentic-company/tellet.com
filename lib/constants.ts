@@ -2,108 +2,117 @@ export const NAV_LINKS = [
   { label: "Features", href: "#features" },
   { label: "How it works", href: "#how-it-works" },
   { label: "Pricing", href: "#pricing" },
+  { label: "GitHub", href: "https://github.com/agentic-company/create-tellet" },
 ] as const;
 
 export const FEATURES = [
   {
-    title: "Agent Engine",
-    description: "Hire AI agents with real roles",
+    title: "AI-Generated Agents",
+    description: "Describe your business, get a team",
     icon: "brain",
-    detail: "Create, deploy, and manage AI agents powered by OpenClaw. Each agent has a defined role — from sales to support to ops.",
+    detail: "No YAML. No config files. Just tell tellet what your business does — AI creates agents with tailored system prompts, roles, and models.",
   },
   {
-    title: "Communication Hub",
-    description: "They talk where you talk",
-    icon: "messages",
-    detail: "Slack, Teams, Discord, Email, SMS, web chat — your agents respond on every channel your customers use.",
-  },
-  {
-    title: "Integrations",
-    description: "Connected to your stack",
-    icon: "plug",
-    detail: "CRM, ERP, GitHub, Jira, Google Workspace, Notion, and any custom API. Your agents work with your existing tools.",
-  },
-  {
-    title: "Automation Studio",
-    description: "No-code workflows, one-click templates",
+    title: "Pluggable LLM Routing",
+    description: "Any model, any provider, per agent",
     icon: "workflow",
-    detail: "Build triggers, schedules, and multi-step automations visually. Start from templates or create your own.",
+    detail: "Anthropic, OpenAI, OpenRouter, Google — use different models for different agents. CS on Haiku, marketing on GPT-4.1, code review on Opus.",
   },
   {
-    title: "Dashboard",
-    description: "See everything. Control everything.",
+    title: "Multi-Channel",
+    description: "Web chat, Slack, Email, and more",
+    icon: "messages",
+    detail: "Start with the built-in chat widget. Add Slack, email, Discord, or WhatsApp with a single command: tellet add slack.",
+  },
+  {
+    title: "Dashboard Included",
+    description: "Monitor, manage, control",
     icon: "layout",
-    detail: "Monitor agent activity, track costs, review performance metrics, and approve decisions — all in one place.",
+    detail: "A full management dashboard comes built-in. Track agent activity, review conversations, monitor costs — all in a dark minimal UI.",
   },
   {
-    title: "AI Website Builder",
-    description: "Your website, built and staffed by AI",
-    icon: "globe",
-    detail: "AI generates your company website with built-in agent-powered customer service. SEO and content managed automatically.",
+    title: "OpenClaw Ready",
+    description: "Upgrade to advanced orchestration",
+    icon: "plug",
+    detail: "Start with the lightweight default engine. When you need multi-agent workflows, cron jobs, or persistent memory — upgrade to OpenClaw with one command.",
   },
-] as const;
-
-export const PAIN_POINTS = [
-  { role: "Sales", pain: "Chasing leads manually" },
-  { role: "Support", pain: "Answering the same questions" },
-  { role: "Marketing", pain: "Creating content alone" },
-  { role: "Operations", pain: "Managing everything yourself" },
-  { role: "Development", pain: "Building without a team" },
+  {
+    title: "Your Infrastructure",
+    description: "Zero vendor lock-in, $0 to start",
+    icon: "globe",
+    detail: "Runs on your own Vercel + Supabase (both free tier). MIT licensed. You own everything — code, data, agents.",
+  },
 ] as const;
 
 export const STEPS = [
   {
     number: "01",
-    title: "Tell it what you need",
-    description: "Describe your business in plain English. tellet creates your agent team automatically.",
+    title: "Run one command",
+    description: "npx create-tellet — answer a few questions about your business. That's it.",
   },
   {
     number: "02",
-    title: "Watch them work",
-    description: "Your agents handle sales, support, marketing, and ops. You approve what matters.",
+    title: "AI builds your team",
+    description: "Claude analyzes your business and generates 3-5 agents with custom system prompts tailored to your needs.",
   },
   {
     number: "03",
-    title: "Scale without hiring",
-    description: "Add new agents, new channels, new workflows. Your AI team grows with you.",
+    title: "Deploy and go live",
+    description: "npm run dev to preview. vercel deploy to go live. Your AI company is operational.",
   },
 ] as const;
 
 export const PRICING_TIERS = [
   {
-    name: "Free",
-    price: "$0",
+    name: "Community",
+    price: "Free",
     period: "forever",
-    description: "Get started with your first AI agents",
-    features: ["3 AI agents", "Basic integrations", "Web chat channel", "Community support"],
-    cta: "Start for free",
+    description: "Full framework, no limits",
+    features: [
+      "Unlimited agents",
+      "Web chat channel",
+      "Anthropic provider",
+      "Dashboard included",
+      "MIT licensed",
+    ],
+    cta: "npx create-tellet",
     highlighted: false,
   },
   {
     name: "Pro",
-    price: "$49",
+    price: "$29",
     period: "/month",
-    description: "Scale your AI workforce",
-    features: ["Unlimited agents", "All integrations", "All channels", "Automation Studio", "Priority support"],
-    cta: "Start free trial",
+    description: "Premium templates & channels",
+    features: [
+      "Everything in Community",
+      "Slack & Email channels",
+      "OpenAI & OpenRouter",
+      "Premium agent templates",
+      "Priority support",
+    ],
+    cta: "Coming soon",
     highlighted: true,
   },
   {
-    name: "Scale",
+    name: "Enterprise",
     price: "Custom",
     period: "",
-    description: "For ambitious solo operators",
-    features: ["Everything in Pro", "Dedicated support", "Custom integrations", "SLA guarantee", "White-label option"],
+    description: "For teams & agencies",
+    features: [
+      "Everything in Pro",
+      "Custom agent development",
+      "OpenClaw orchestration",
+      "Dedicated support",
+      "SLA guarantee",
+    ],
     cta: "Contact us",
     highlighted: false,
   },
 ] as const;
 
-export const SOCIAL_LOGOS = [
-  "Slack",
-  "GitHub",
-  "Notion",
-  "Google",
-  "Discord",
-  "Linear",
+export const ARCHITECTURE_LAYERS = [
+  { name: "Engine", options: ["Default", "OpenClaw"], default: "Default" },
+  { name: "LLM", options: ["Anthropic", "OpenAI", "OpenRouter", "Google"], default: "Anthropic" },
+  { name: "Channels", options: ["Web Chat", "Slack", "Email", "Discord"], default: "Web Chat" },
+  { name: "Storage", options: ["Supabase", "PostgreSQL", "SQLite"], default: "Supabase" },
 ] as const;
