@@ -5,7 +5,8 @@ import { SocialProof } from "@/components/sections/SocialProof";
 import { TerminalDemo } from "@/components/sections/TerminalDemo";
 import { Features } from "@/components/sections/Features";
 import { HowItWorks } from "@/components/sections/HowItWorks";
-import { Pricing } from "@/components/sections/Pricing";
+import { Compare } from "@/components/sections/Compare";
+import { GetStarted } from "@/components/sections/GetStarted";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 
 export default function Home() {
@@ -18,7 +19,8 @@ export default function Home() {
         <TerminalDemo />
         <Features />
         <HowItWorks />
-        <Pricing />
+        <Compare />
+        <GetStarted />
         <FinalCTA />
       </main>
       <Footer />

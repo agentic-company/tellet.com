@@ -1,8 +1,8 @@
 export const NAV_LINKS = [
   { label: "Features", href: "#features" },
   { label: "How it works", href: "#how-it-works" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "GitHub", href: "https://github.com/agentic-company/create-tellet" },
+  { label: "Compare", href: "#compare" },
+  { label: "Docs", href: "https://github.com/agentic-company/create-tellet#readme" },
 ] as const;
 
 export const FEATURES = [
@@ -62,57 +62,12 @@ export const STEPS = [
   },
 ] as const;
 
-export const PRICING_TIERS = [
-  {
-    name: "Community",
-    price: "Free",
-    period: "forever",
-    description: "Full framework, no limits",
-    features: [
-      "Unlimited agents",
-      "Web chat channel",
-      "Anthropic provider",
-      "Dashboard included",
-      "MIT licensed",
-    ],
-    cta: "npx create-tellet",
-    highlighted: false,
-  },
-  {
-    name: "Pro",
-    price: "$29",
-    period: "/month",
-    description: "Premium templates & channels",
-    features: [
-      "Everything in Community",
-      "Slack & Email channels",
-      "OpenAI & OpenRouter",
-      "Premium agent templates",
-      "Priority support",
-    ],
-    cta: "Coming soon",
-    highlighted: true,
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    period: "",
-    description: "For teams & agencies",
-    features: [
-      "Everything in Pro",
-      "Custom agent development",
-      "OpenClaw orchestration",
-      "Dedicated support",
-      "SLA guarantee",
-    ],
-    cta: "Contact us",
-    highlighted: false,
-  },
-] as const;
-
-export const ARCHITECTURE_LAYERS = [
-  { name: "Engine", options: ["Default", "OpenClaw"], default: "Default" },
-  { name: "LLM", options: ["Anthropic", "OpenAI", "OpenRouter", "Google"], default: "Anthropic" },
-  { name: "Channels", options: ["Web Chat", "Slack", "Email", "Discord"], default: "Web Chat" },
-  { name: "Storage", options: ["Supabase", "PostgreSQL", "SQLite"], default: "Supabase" },
+export const COMPARE_ROWS = [
+  { feature: "Setup", tellet: "One command", paperclip: "YAML config files", mission: "Sales demo" },
+  { feature: "Agent creation", tellet: "AI auto-generates", paperclip: "Manual definition", mission: "Consultant setup" },
+  { feature: "Target user", tellet: "Any entrepreneur", paperclip: "Developers", mission: "Enterprises" },
+  { feature: "Infrastructure", tellet: "Your Vercel + Supabase", paperclip: "Your Node + PostgreSQL", mission: "Their cloud" },
+  { feature: "LLM choice", tellet: "Per-agent routing", paperclip: "OpenClaw default", mission: "Fixed" },
+  { feature: "Cost to start", tellet: "$0", paperclip: "$0", mission: "Contact sales" },
+  { feature: "License", tellet: "MIT", paperclip: "MIT", mission: "Proprietary" },
 ] as const;

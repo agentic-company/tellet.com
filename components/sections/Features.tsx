@@ -47,8 +47,7 @@ export function Features() {
           Everything your team needs
         </h2>
         <p className="text-text-secondary text-lg text-center max-w-2xl mx-auto mb-16">
-          Six powerful modules, one platform. Your AI agents get the tools to
-          run your business end-to-end.
+          Every layer is pluggable. Start simple, swap anything later.
         </p>
       </FadeUp>
 

@@ -10,7 +10,7 @@ export function Footer() {
             <span className="text-highlight">let</span>
           </span>
           <span className="text-text-tertiary text-sm">
-            — AI Agentic Company Platform
+            — AI Agentic Company Framework
           </span>
         </div>
 
