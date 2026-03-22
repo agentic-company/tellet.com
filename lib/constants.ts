@@ -48,7 +48,7 @@ export const STEPS = [
   {
     number: "01",
     title: "Run one command",
-    description: "npx create-tellet — answer a few questions about your business. That's it.",
+    description: "npx @tellet/create — answer a few questions about your business. That's it.",
   },
   {
     number: "02",
