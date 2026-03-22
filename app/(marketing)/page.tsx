@@ -7,6 +7,7 @@ import { Features } from "@/components/sections/Features";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Pricing } from "@/components/sections/Pricing";
 import { FinalCTA } from "@/components/sections/FinalCTA";
+import { TellyWidget } from "@/components/chat/TellyWidget";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
         <FinalCTA />
       </main>
       <Footer />
+      <TellyWidget />
     </>
   );
 }
