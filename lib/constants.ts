@@ -7,40 +7,40 @@ export const NAV_LINKS = [
 
 export const FEATURES = [
   {
-    title: "AI-Generated Agents",
-    description: "Describe your business, get a team",
+    title: "AI Orchestrator",
+    description: "Run your company through conversation",
     icon: "brain",
-    detail: "No YAML. No config files. Just tell tellet what your business does — AI creates agents with tailored system prompts, roles, and models.",
+    detail: "Talk to your Orchestrator to manage agents, update your website, check stats, and install tools. No code needed — just tell it what to do.",
   },
   {
-    title: "Pluggable LLM Routing",
-    description: "Any model, any provider, per agent",
-    icon: "workflow",
-    detail: "Anthropic, OpenAI, OpenRouter, Google — use different models for different agents. CS on Haiku, marketing on GPT-4.1, code review on Opus.",
-  },
-  {
-    title: "Multi-Channel",
-    description: "Web chat, Slack, Email, and more",
+    title: "Knowledge Base",
+    description: "Your agents know your business",
     icon: "messages",
-    detail: "Start with the built-in chat widget. Add Slack, email, Discord, or WhatsApp with a single command: tellet add slack.",
+    detail: "Vector-powered knowledge base with pgvector. Add product info, policies, and FAQ — your agents reference them to give accurate answers.",
   },
   {
-    title: "Dashboard Included",
-    description: "Monitor, manage, control",
-    icon: "layout",
-    detail: "A full management dashboard comes built-in. Track agent activity, review conversations, monitor costs — all in a dark minimal UI.",
-  },
-  {
-    title: "OpenClaw Ready",
-    description: "Upgrade to advanced orchestration",
+    title: "Tool Marketplace",
+    description: "Stripe, Email, Slack, GitHub, Notion",
     icon: "plug",
-    detail: "Start with the lightweight default engine. When you need multi-agent workflows, cron jobs, or persistent memory — upgrade to OpenClaw with one command.",
+    detail: "One command to connect tools. Orchestrator auto-assigns to the right agents. Powered by MCP — 19,000+ integrations available.",
   },
   {
-    title: "Your Infrastructure",
-    description: "Zero vendor lock-in, $0 to start",
+    title: "3-Tier Deployment",
+    description: "Free to enterprise, you choose",
     icon: "globe",
-    detail: "Runs on your own Vercel + Supabase (both free tier). MIT licensed. You own everything — code, data, agents.",
+    detail: "Quick Start (Vercel, free), Cloud (Railway/Docker, $5/mo), or Enterprise (AWS CDK). No vendor lock-in — switch anytime.",
+  },
+  {
+    title: "Connect Mode",
+    description: "Add AI to your existing business",
+    icon: "workflow",
+    detail: "Already have a website? Use Connect mode. Embed our chat widget with one script tag. Your agents, your data, your infrastructure.",
+  },
+  {
+    title: "Autonomous Agents",
+    description: "Scheduled tasks, zero babysitting",
+    icon: "layout",
+    detail: "Set up cron schedules for your agents. Daily marketing reports, weekly analytics, automated customer follow-ups — all running on autopilot.",
   },
 ] as const;
 
@@ -48,26 +48,27 @@ export const STEPS = [
   {
     number: "01",
     title: "Run one command",
-    description: "npx @tellet/create — answer a few questions about your business. That's it.",
+    description: "npx @tellet/create — choose New or Connect, pick your cloud, answer a few questions. 60 seconds.",
   },
   {
     number: "02",
-    title: "AI builds your team",
-    description: "Claude analyzes your business and generates 3-5 agents with custom system prompts tailored to your needs.",
+    title: "AI builds everything",
+    description: "AI generates your agent team, website, dashboard, and Knowledge Base — all tailored to your specific business.",
   },
   {
     number: "03",
-    title: "Deploy and go live",
-    description: "npm run dev to preview. vercel deploy to go live. Your AI company is operational.",
+    title: "Talk to your Orchestrator",
+    description: "Manage your AI company through conversation. Install tools, update content, schedule tasks — all by chatting with the Orchestrator.",
   },
 ] as const;
 
 export const COMPARE_ROWS = [
-  { feature: "Setup", tellet: "One command", paperclip: "YAML config files", mission: "Sales demo" },
+  { feature: "Setup", tellet: "One command", paperclip: "Git clone + config", mission: "Sales demo" },
   { feature: "Agent creation", tellet: "AI auto-generates", paperclip: "Manual definition", mission: "Consultant setup" },
-  { feature: "Target user", tellet: "Any entrepreneur", paperclip: "Developers", mission: "Enterprises" },
-  { feature: "Infrastructure", tellet: "Your Vercel + Supabase", paperclip: "Your Node + PostgreSQL", mission: "Their cloud" },
-  { feature: "LLM choice", tellet: "Per-agent routing", paperclip: "OpenClaw default", mission: "Fixed" },
+  { feature: "Management", tellet: "Orchestrator (chat)", paperclip: "Dashboard UI", mission: "Enterprise UI" },
+  { feature: "Existing business", tellet: "Connect mode + widget", paperclip: "Manual integration", mission: "Legacy adapters" },
+  { feature: "Tool ecosystem", tellet: "MCP marketplace", paperclip: "Plugin system", mission: "Built-in only" },
+  { feature: "Deployment", tellet: "Free / Cloud / AWS", paperclip: "Self-hosted only", mission: "Their cloud" },
+  { feature: "Target user", tellet: "Anyone (non-dev OK)", paperclip: "Developers", mission: "Enterprises" },
   { feature: "Cost to start", tellet: "$0", paperclip: "$0", mission: "Contact sales" },
-  { feature: "License", tellet: "MIT", paperclip: "MIT", mission: "Proprietary" },
 ] as const;

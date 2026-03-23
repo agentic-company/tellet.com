@@ -29,18 +29,18 @@ export function GetStarted() {
               <p className="text-text-primary">$ npx @tellet/create</p>
             </div>
             <div>
-              <p className="text-text-tertiary mb-1"># 2. Install and run</p>
-              <p className="text-text-primary">$ cd your-company</p>
-              <p className="text-text-primary">$ npm install</p>
-              <p className="text-text-primary">$ npm run dev</p>
+              <p className="text-text-tertiary mb-1"># 2. Run locally</p>
+              <p className="text-text-primary">$ docker compose up</p>
+              <p className="text-text-tertiary text-xs mt-1"># or: cd your-company && npm run dev</p>
             </div>
             <div>
-              <p className="text-text-tertiary mb-1"># 3. Deploy to production</p>
-              <p className="text-text-primary">$ vercel deploy</p>
+              <p className="text-text-tertiary mb-1"># 3. Deploy anywhere</p>
+              <p className="text-text-primary">$ railway up</p>
+              <p className="text-text-tertiary text-xs mt-1"># or: vercel deploy / cdk deploy</p>
             </div>
             <div className="pt-2 border-t border-border/50">
               <p className="text-green-400">
-                Your AI company is live.
+                Your AI company is live. Talk to the Orchestrator.
               </p>
             </div>
           </div>

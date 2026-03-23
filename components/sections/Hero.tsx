@@ -38,10 +38,10 @@ export function Hero() {
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
-            Build your{" "}
+            Run your{" "}
             <span className="text-accent">AI company</span>
             <br />
-            in one command.
+            with one command.
           </h1>
         </motion.div>
 
@@ -51,10 +51,10 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
         >
-          Describe your business. AI generates your agent team.
+          The open-source platform for running an Agentic Company.
           <br className="hidden sm:block" />
-          Deploy to your own infrastructure.{" "}
-          <span className="text-text-primary font-medium">Zero config. Zero cost.</span>
+          AI agents, Orchestrator, Knowledge Base, and tools —{" "}
+          <span className="text-text-primary font-medium">all from one command.</span>
         </motion.p>
 
         {/* CLI Command */}
