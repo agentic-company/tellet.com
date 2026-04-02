@@ -7,7 +7,7 @@ export function FinalCTA() {
   const [copied, setCopied] = useState(false);
 
   const copy = () => {
-    navigator.clipboard.writeText("npx @tellet/create");
+    navigator.clipboard.writeText("npx create-tellet");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -37,7 +37,7 @@ export function FinalCTA() {
             >
               <span className="text-text-tertiary font-mono text-sm">$</span>
               <code className="font-mono text-lg text-text-primary">
-                npx @tellet/create
+                npx create-tellet
               </code>
               <span className="text-text-tertiary">
                 {copied ? (

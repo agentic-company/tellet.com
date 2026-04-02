@@ -5,7 +5,7 @@ import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { FadeUp } from "@/components/animations/FadeUp";
 
 const lines = [
-  { text: "$ npx @tellet/create", type: "command" },
+  { text: "$ npx create-tellet", type: "command" },
   { text: "", type: "blank" },
   { text: "  ? What would you like to do?", type: "prompt" },
   { text: "  > New — Build a new AI company", type: "input" },
