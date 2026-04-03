@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import Link from "next/link";
 import { ParticleGrid } from "@/components/animations/ParticleGrid";
 
 export function Hero() {
@@ -38,10 +39,8 @@ export function Hero() {
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
-            Run your{" "}
-            <span className="text-accent">AI company</span>
-            <br />
-            with one command.
+            Tell it.{" "}
+            <span className="text-accent">Let it.</span>
           </h1>
         </motion.div>
 
@@ -51,34 +50,44 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
         >
-          The open-source platform for running an Agentic Company.
+          Describe your business. AI agents run it for you.
           <br className="hidden sm:block" />
-          AI agents, Orchestrator, Knowledge Base, and tools —{" "}
-          <span className="text-text-primary font-medium">all from one command.</span>
+          Customer support, marketing, operations —{" "}
+          <span className="text-text-primary font-medium">all automated.</span>
         </motion.p>
 
-        {/* CLI Command */}
+        {/* Dual CTA */}
         <motion.div
-          className="mt-10 flex justify-center"
+          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
+          <Link
+            href="/login"
+            className="inline-flex items-center gap-2 rounded-xl bg-accent px-8 py-4 text-lg font-medium text-white hover:bg-accent-hover transition-colors shadow-[0_0_30px_var(--color-accent-glow)]"
+          >
+            Start free
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </Link>
+
           <button
             onClick={copy}
             className="group flex items-center gap-3 rounded-xl bg-bg-secondary border border-border hover:border-accent/50 px-6 py-4 transition-all cursor-pointer"
           >
             <span className="text-text-tertiary font-mono text-sm">$</span>
-            <code className="font-mono text-lg text-text-primary">
+            <code className="font-mono text-base text-text-primary">
               npx @tellet/create
             </code>
             <span className="text-text-tertiary group-hover:text-accent transition-colors">
               {copied ? (
-                <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                 </svg>
               ) : (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
                 </svg>
               )}
@@ -92,6 +101,8 @@ export function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.45 }}
         >
+          <span>No credit card required</span>
+          <span>&middot;</span>
           <a
             href="https://github.com/agentic-company/create-tellet"
             target="_blank"
@@ -103,8 +114,6 @@ export function Hero() {
             </svg>
             GitHub
           </a>
-          <span>&middot;</span>
-          <span>Next.js + Supabase + Claude</span>
           <span>&middot;</span>
           <a href="#how-it-works" className="hover:text-text-secondary transition-colors">
             See how it works &darr;

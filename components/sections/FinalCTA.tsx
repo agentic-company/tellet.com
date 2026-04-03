@@ -25,27 +25,36 @@ export function FinalCTA() {
           <div className="absolute inset-0 border border-accent/20 rounded-2xl pointer-events-none" />
 
           <h2 className="text-4xl lg:text-5xl font-semibold tracking-tight mb-4 relative">
-            Build your AI company now.
+            Start your AI company now.
           </h2>
           <p className="text-text-secondary text-lg mb-8 max-w-lg mx-auto relative">
-            One command. Your infrastructure. Zero cost to start.
+            Describe your business. We handle the rest.
           </p>
-          <div className="relative">
+          <div className="relative flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="/login"
+              className="inline-flex items-center gap-2 rounded-xl bg-accent px-8 py-4 text-lg font-medium text-white hover:bg-accent-hover transition-colors"
+            >
+              Start free
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
             <button
               onClick={copy}
               className="inline-flex items-center gap-3 rounded-xl bg-bg-secondary border border-border hover:border-accent/50 px-6 py-4 transition-all cursor-pointer"
             >
               <span className="text-text-tertiary font-mono text-sm">$</span>
-              <code className="font-mono text-lg text-text-primary">
+              <code className="font-mono text-base text-text-primary">
                 npx @tellet/create
               </code>
               <span className="text-text-tertiary">
                 {copied ? (
-                  <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                   </svg>
                 ) : (
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
                   </svg>
                 )}

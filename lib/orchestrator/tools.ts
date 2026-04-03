@@ -41,54 +41,6 @@ export const orchestratorTools: Anthropic.Tool[] = [
     },
   },
   {
-    name: "update_site_content",
-    description:
-      "Update the website content. Can update tagline, subtitle, features, FAQ, or CTA. Only include fields that need to change.",
-    input_schema: {
-      type: "object" as const,
-      properties: {
-        tagline: {
-          type: "string",
-          description: "New tagline for the website",
-        },
-        subtitle: {
-          type: "string",
-          description: "New subtitle for the website",
-        },
-        cta: {
-          type: "string",
-          description: "New call-to-action text",
-        },
-        features: {
-          type: "array",
-          description: "New features list",
-          items: {
-            type: "object",
-            properties: {
-              title: { type: "string" },
-              description: { type: "string" },
-              icon: { type: "string" },
-            },
-            required: ["title", "description", "icon"],
-          },
-        },
-        faq: {
-          type: "array",
-          description: "New FAQ list",
-          items: {
-            type: "object",
-            properties: {
-              question: { type: "string" },
-              answer: { type: "string" },
-            },
-            required: ["question", "answer"],
-          },
-        },
-      },
-      required: [],
-    },
-  },
-  {
     name: "get_recent_conversations",
     description:
       "Get recent conversations with message counts and agent info.",
@@ -164,52 +116,6 @@ export const orchestratorTools: Anthropic.Tool[] = [
         },
       },
       required: ["document_id"],
-    },
-  },
-  {
-    name: "run_agent_task",
-    description:
-      "Run a specific agent with a task immediately. Use this when the owner asks to have an agent do something right now.",
-    input_schema: {
-      type: "object" as const,
-      properties: {
-        agent_id: {
-          type: "string",
-          description: "The agent ID to run",
-        },
-        task: {
-          type: "string",
-          description: "The task description for the agent",
-        },
-      },
-      required: ["agent_id", "task"],
-    },
-  },
-  {
-    name: "manage_schedule",
-    description:
-      "Enable or disable scheduled tasks for an agent. Updates tellet.json.",
-    input_schema: {
-      type: "object" as const,
-      properties: {
-        agent_id: {
-          type: "string",
-          description: "The agent ID",
-        },
-        enabled: {
-          type: "boolean",
-          description: "Enable or disable the schedule",
-        },
-        cron: {
-          type: "string",
-          description: "Cron expression (e.g. '0 9 * * *' for daily at 9am)",
-        },
-        task: {
-          type: "string",
-          description: "The recurring task description",
-        },
-      },
-      required: ["agent_id", "enabled"],
     },
   },
   {
