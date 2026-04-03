@@ -5,6 +5,8 @@ import { useState } from "react";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
   const supabase = createBrowserSupabase();
 
   const signIn = async (provider: "google" | "github") => {
@@ -15,6 +17,20 @@ export default function LoginPage() {
         redirectTo: `${window.location.origin}/callback`,
       },
     });
+  };
+
+  const signInWithEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setLoading("email");
+    const { error } = await supabase.auth.signInWithOtp({
+      email: email.trim(),
+      options: {
+        emailRedirectTo: `${window.location.origin}/callback`,
+      },
+    });
+    setLoading(null);
+    if (!error) setEmailSent(true);
   };
 
   return (
@@ -67,6 +83,39 @@ export default function LoginPage() {
             </svg>
             {loading === "github" ? "Signing in..." : "Continue with GitHub"}
           </button>
+
+          <div className="flex items-center gap-3 my-2">
+            <div className="flex-1 h-px bg-border" />
+            <span className="text-xs text-text-tertiary">or</span>
+            <div className="flex-1 h-px bg-border" />
+          </div>
+
+          {emailSent ? (
+            <div className="rounded-lg bg-accent/10 border border-accent/20 px-4 py-3 text-center">
+              <p className="text-sm text-accent font-medium">Check your email</p>
+              <p className="text-xs text-text-secondary mt-1">
+                We sent a login link to {email}
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={signInWithEmail} className="flex gap-2">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                disabled={loading !== null}
+                className="flex-1 rounded-lg bg-bg-secondary border border-border px-4 py-3 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent disabled:opacity-50"
+              />
+              <button
+                type="submit"
+                disabled={loading !== null || !email.trim()}
+                className="rounded-lg bg-bg-secondary border border-border hover:border-border-hover px-4 py-3 text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer"
+              >
+                {loading === "email" ? "..." : "Send link"}
+              </button>
+            </form>
+          )}
         </div>
 
         <p className="text-center text-text-tertiary text-xs mt-6">
