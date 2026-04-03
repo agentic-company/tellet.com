@@ -26,7 +26,7 @@ export function GetStarted() {
           <div className="p-5 font-mono text-sm space-y-4">
             <div>
               <p className="text-text-tertiary mb-1"># 1. Create your AI company</p>
-              <p className="text-text-primary">$ npx create-tellet</p>
+              <p className="text-text-primary">$ npx @tellet/create</p>
             </div>
             <div>
               <p className="text-text-tertiary mb-1"># 2. Run locally</p>

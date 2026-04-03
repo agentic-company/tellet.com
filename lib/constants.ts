@@ -48,7 +48,7 @@ export const STEPS = [
   {
     number: "01",
     title: "Run one command",
-    description: "npx create-tellet — choose New or Connect, pick your cloud, answer a few questions. 60 seconds.",
+    description: "npx @tellet/create — choose New or Connect, pick your cloud, answer a few questions. 60 seconds.",
   },
   {
     number: "02",
