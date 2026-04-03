@@ -50,8 +50,9 @@ export async function POST(request: Request) {
     .single();
 
   if (companyError) {
+    console.error("Company creation error:", companyError);
     return NextResponse.json(
-      { error: "Failed to create company" },
+      { error: `Failed to create company: ${companyError.message}` },
       { status: 500 }
     );
   }
@@ -76,8 +77,9 @@ export async function POST(request: Request) {
       .insert(agentRows);
 
     if (agentsError) {
+      console.error("Agents insertion error:", agentsError);
       return NextResponse.json(
-        { error: "Failed to save agents" },
+        { error: `Failed to save agents: ${agentsError.message}` },
         { status: 500 }
       );
     }
@@ -88,11 +90,12 @@ export async function POST(request: Request) {
       industry: result.industry,
       summary: result.summary,
     });
-  } catch {
+  } catch (err) {
+    console.error("Agent generation error:", err);
     // Cleanup company if agent generation fails
     await supabase.from("companies").delete().eq("id", company.id);
     return NextResponse.json(
-      { error: "Failed to generate agents. Please try again." },
+      { error: `Failed to generate agents: ${err instanceof Error ? err.message : "Unknown error"}` },
       { status: 500 }
     );
   }
