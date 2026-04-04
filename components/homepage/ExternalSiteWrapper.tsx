@@ -15,16 +15,43 @@ export function ExternalSiteWrapper({
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [agentId, setAgentId] = useState<string | null>(null);
+  const [sessionId] = useState(() => Math.random().toString(36).slice(2));
+
+  // Fetch first active agent
+  const fetchAgent = async (): Promise<string | null> => {
+    if (agentId) return agentId;
+    try {
+      const res = await fetch(`/api/widget/config?company_id=${companyId}`);
+      const data = await res.json();
+      if (data.agent?.id) {
+        setAgentId(data.agent.id);
+        return data.agent.id;
+      }
+    } catch { /* ignore */ }
+    return null;
+  };
 
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
+    const resolvedAgentId = await fetchAgent();
+    if (!resolvedAgentId) return;
     const userMsg = input.trim();
     setInput("");
     setMessages((m) => [...m, { role: "user", content: userMsg }]);
     setLoading(true);
 
     try {
-      const res = await fetch(`/api/widget/chat?company_id=${companyId}&message=${encodeURIComponent(userMsg)}`);
+      const res = await fetch("/api/widget/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: userMsg,
+          agent_id: resolvedAgentId,
+          company_id: companyId,
+          session_id: sessionId,
+        }),
+      });
       const reader = res.body?.getReader();
       if (!reader) return;
 
@@ -77,7 +104,7 @@ export function ExternalSiteWrapper({
       {/* Floating chat button */}
       {!chatOpen && (
         <button
-          onClick={() => setChatOpen(true)}
+          onClick={() => { setChatOpen(true); fetchAgent(); }}
           className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-accent hover:bg-accent-hover shadow-2xl flex items-center justify-center transition-all cursor-pointer z-50 hover:scale-105"
         >
           <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
