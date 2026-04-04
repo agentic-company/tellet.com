@@ -85,6 +85,8 @@ export async function GET(request: Request) {
 
     redirect(`/${company.slug}/settings?connected=openrouter`);
   } catch (err) {
+    // Next.js redirect() throws internally — re-throw it
+    if (err instanceof Error && err.message === "NEXT_REDIRECT") throw err;
     return Response.json(
       { error: err instanceof Error ? err.message : "Connection failed" },
       { status: 500 }
