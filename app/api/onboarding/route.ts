@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createServerSupabase, createServiceSupabase } from "@/lib/supabase/server";
 import { generateAgents } from "@/lib/ai/generate";
 import { NextResponse } from "next/server";
 
@@ -22,6 +22,9 @@ export async function POST(request: Request) {
     );
   }
 
+  // Use service role client for DB writes (bypasses RLS)
+  const admin = createServiceSupabase();
+
   // Generate slug from company name
   const slug = companyName
     .toLowerCase()
@@ -29,7 +32,7 @@ export async function POST(request: Request) {
     .replace(/^-|-$/g, "");
 
   // Check slug availability
-  const { data: existing } = await supabase
+  const { data: existing } = await admin
     .from("companies")
     .select("id")
     .eq("slug", slug)
@@ -38,7 +41,7 @@ export async function POST(request: Request) {
   const finalSlug = existing ? `${slug}-${Date.now().toString(36)}` : slug;
 
   // Create company
-  const { data: company, error: companyError } = await supabase
+  const { data: company, error: companyError } = await admin
     .from("companies")
     .insert({
       name: companyName,
@@ -72,7 +75,7 @@ export async function POST(request: Request) {
       status: "active",
     }));
 
-    const { error: agentsError } = await supabase
+    const { error: agentsError } = await admin
       .from("agents")
       .insert(agentRows);
 
@@ -93,7 +96,7 @@ export async function POST(request: Request) {
   } catch (err) {
     console.error("Agent generation error:", err);
     // Cleanup company if agent generation fails
-    await supabase.from("companies").delete().eq("id", company.id);
+    await admin.from("companies").delete().eq("id", company.id);
     return NextResponse.json(
       { error: `Failed to generate agents: ${err instanceof Error ? err.message : "Unknown error"}` },
       { status: 500 }
