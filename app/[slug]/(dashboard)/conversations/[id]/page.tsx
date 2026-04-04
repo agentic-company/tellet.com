@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createServiceSupabase } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
 export default async function ConversationDetailPage({
@@ -8,7 +8,7 @@ export default async function ConversationDetailPage({
   params: Promise<{ slug: string; id: string }>;
 }) {
   const { slug, id } = await params;
-  const supabase = await createServerSupabase();
+  const supabase = createServiceSupabase();
 
   const { data: conversation } = await supabase
     .from("conversations")

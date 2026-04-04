@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createServiceSupabase } from "@/lib/supabase/server";
 import { StatsCards } from "@/components/dashboard/StatsCards";
 import { DashboardAgentGrid } from "@/components/dashboard/DashboardAgentGrid";
 
@@ -8,9 +8,8 @@ export default async function DashboardPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const supabase = await createServerSupabase();
+  const supabase = createServiceSupabase();
 
-  // Get company
   const { data: company } = await supabase
     .from("companies")
     .select("id, name")

@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createServerSupabase, createServiceSupabase } from "@/lib/supabase/server";
 import { streamAgentWithTools } from "@/lib/engine";
 import { searchKnowledge } from "@/lib/mcp/knowledge";
 
@@ -23,8 +23,10 @@ export async function POST(request: Request) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Get agent (RLS ensures company isolation)
-  const { data: agent } = await supabase
+  const admin = createServiceSupabase();
+
+  // Get agent
+  const { data: agent } = await admin
     .from("agents")
     .select("*")
     .eq("id", agent_id)
@@ -38,7 +40,7 @@ export async function POST(request: Request) {
   // Get or create conversation
   let convId = conversation_id;
   if (!convId) {
-    const { data: conv } = await supabase
+    const { data: conv } = await admin
       .from("conversations")
       .insert({ agent_id, company_id, channel: "web" })
       .select("id")
@@ -47,12 +49,12 @@ export async function POST(request: Request) {
   }
 
   // Save user message
-  await supabase
+  await admin
     .from("messages")
     .insert({ conversation_id: convId, role: "user", content: message });
 
   // Get history
-  const { data: history } = await supabase
+  const { data: history } = await admin
     .from("messages")
     .select("role, content")
     .eq("conversation_id", convId)
@@ -115,14 +117,14 @@ export async function POST(request: Request) {
         }
 
         // Save response
-        await supabase.from("messages").insert({
+        await admin.from("messages").insert({
           conversation_id: convId,
           role: "assistant",
           content: fullResponse,
         });
 
         // Log activity
-        await supabase.from("activity_log").insert({
+        await admin.from("activity_log").insert({
           company_id,
           agent_id,
           action: "replied",

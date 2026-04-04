@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createServiceSupabase } from "@/lib/supabase/server";
 import { AgentsListClient } from "@/components/dashboard/AgentsListClient";
 
 export default async function AgentsPage({
@@ -7,7 +7,7 @@ export default async function AgentsPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const supabase = await createServerSupabase();
+  const supabase = createServiceSupabase();
 
   const { data: company } = await supabase
     .from("companies")

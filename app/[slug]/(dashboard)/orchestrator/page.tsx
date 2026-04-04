@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createServiceSupabase } from "@/lib/supabase/server";
 import { OrchestratorFullPage } from "./OrchestratorFullPage";
 
 export default async function OrchestratorPage({
@@ -7,7 +7,7 @@ export default async function OrchestratorPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const supabase = await createServerSupabase();
+  const supabase = createServiceSupabase();
 
   const { data: company } = await supabase
     .from("companies")
