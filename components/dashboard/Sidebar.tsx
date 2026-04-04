@@ -42,7 +42,7 @@ export function Sidebar({ companyName, slug }: { companyName: string; slug: stri
           );
         })}
       </nav>
-      <div className="px-5 py-4 border-t border-border">
+      <div className="px-5 py-4">
         <p className="text-[11px] text-text-tertiary">Powered by <span className="text-text-secondary">tel</span><span className="text-accent">let</span></p>
       </div>
     </aside>
