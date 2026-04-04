@@ -179,10 +179,7 @@ export function HomepageBuilder({
   initialConfig: HomepageConfig | null;
 }) {
   const router = useRouter();
-  const hasExternal = !!initialConfig?.externalUrl;
-  const [mode, setMode] = useState<Mode>(
-    hasExternal ? "external" : initialConfig ? "build" : "choose"
-  );
+  const [mode, setMode] = useState<Mode>("choose");
   const [step, setStep] = useState<Step>("template");
   const [saving, setSaving] = useState(false);
   const [externalUrl, setExternalUrl] = useState(initialConfig?.externalUrl || "");
