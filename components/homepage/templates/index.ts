@@ -43,25 +43,25 @@ export const TEMPLATES: TemplateInfo[] = [
   {
     id: "default",
     name: "Classic",
-    description: "Clean dark layout with structured sections",
+    description: "Clean dark theme, grid-based layout, refined typography",
     component: DefaultTemplate,
   },
   {
     id: "gradient",
-    name: "Gradient",
-    description: "Glowing gradients, glass morphism cards, futuristic feel",
+    name: "Aura",
+    description: "Ambient glows, frosted glass, ethereal dark aesthetic",
     component: GradientTemplate,
   },
   {
     id: "minimal",
-    name: "Minimal",
-    description: "Light theme, elegant typography, generous whitespace",
+    name: "Paper",
+    description: "Light, editorial feel — whitespace-forward, elegant type",
     component: MinimalTemplate,
   },
   {
     id: "bold",
-    name: "Bold",
-    description: "Large type, vivid color blocks, high-impact design",
+    name: "Impact",
+    description: "Full-bleed color hero, oversized type, high contrast",
     component: BoldTemplate,
   },
 ];

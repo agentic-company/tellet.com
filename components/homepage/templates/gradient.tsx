@@ -1,112 +1,92 @@
 import Link from "next/link";
 import type { TemplateProps } from "./index";
 
-const ROLE_ICONS: Record<string, string> = {
-  customer_support: "CS",
-  marketing: "MK",
-  sales: "SL",
-  operations: "OP",
-  development: "DV",
-  analytics: "AN",
-};
-
 export function GradientTemplate({ company, agents, config }: TemplateProps) {
   const sections = config.sections;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white">
-      {/* Hero with gradient */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 via-transparent to-cyan-500/20" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-to-b from-violet-500/10 to-transparent rounded-full blur-3xl" />
-
-        <header className="relative max-w-5xl mx-auto px-6 py-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 flex items-center justify-center font-bold text-sm">
-              {company.name[0]}
-            </div>
-            <span className="font-semibold">{company.name}</span>
-          </div>
-          <Link
-            href="/"
-            className="text-xs text-white/40 hover:text-white/60 transition-colors"
-          >
-            Powered by tellet
-          </Link>
-        </header>
-
-        <section className="relative max-w-5xl mx-auto px-6 pt-20 pb-32 text-center">
-          <h1 className="text-5xl sm:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent">
-            {company.name}
-          </h1>
-          {config.tagline && (
-            <p className="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
-              {config.tagline}
-            </p>
-          )}
-        </section>
+    <div className="min-h-screen bg-[#050510] text-white selection:bg-violet-500/30">
+      {/* Ambient background */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-violet-600/[0.07] blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-cyan-500/[0.05] blur-[120px]" />
+        <div className="absolute top-[40%] left-[60%] w-[300px] h-[300px] rounded-full bg-fuchsia-500/[0.04] blur-[100px]" />
       </div>
 
-      <main className="max-w-5xl mx-auto px-6 -mt-16 space-y-20 pb-20">
-        {/* About — glass card */}
+      {/* Nav */}
+      <nav className="sticky top-0 z-50 border-b border-white/[0.04] bg-[#050510]/60 backdrop-blur-2xl">
+        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-md bg-gradient-to-br from-violet-500/80 to-cyan-400/80 flex items-center justify-center text-[11px] font-bold">
+              {company.name[0]}
+            </div>
+            <span className="text-[13px] font-medium">{company.name}</span>
+          </div>
+          <Link href="/" className="text-[11px] text-white/20 hover:text-white/40 transition-colors">
+            tellet.com
+          </Link>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="max-w-5xl mx-auto px-6 pt-28 pb-24 text-center">
+        <h1 className="text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.05] tracking-[-0.04em] bg-gradient-to-b from-white via-white/90 to-white/30 bg-clip-text text-transparent">
+          {config.tagline || company.name}
+        </h1>
+        {config.tagline && company.description && (
+          <p className="mt-6 text-base text-white/35 max-w-lg mx-auto leading-relaxed">
+            {company.description}
+          </p>
+        )}
+      </section>
+
+      <main className="max-w-5xl mx-auto px-6 pb-24 space-y-28">
+        {/* About */}
         {sections.includes("about") && config.about && (
-          <section className="relative">
-            <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 sm:p-10">
-              <h2 className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-4">
-                About
-              </h2>
-              <p className="text-lg text-white/70 leading-relaxed whitespace-pre-line">
+          <section className="max-w-2xl mx-auto">
+            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm p-8 sm:p-10">
+              <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-violet-400/80 mb-5">About</p>
+              <p className="text-[16px] text-white/55 leading-[1.85] whitespace-pre-line">
                 {config.about}
               </p>
             </div>
           </section>
         )}
 
-        {/* Team — gradient border cards */}
+        {/* Team */}
         {sections.includes("team") && agents.length > 0 && (
           <section>
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-cyan-400 mb-6 text-center">
-              AI Team
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-cyan-400/80 mb-8 text-center">Team</p>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {agents.map((agent) => (
-                <div key={agent.id} className="group relative rounded-2xl p-[1px] bg-gradient-to-b from-white/20 to-white/5">
-                  <div className="rounded-2xl bg-[#0a0a0f] p-6 h-full">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-500/20 to-cyan-400/20 flex items-center justify-center text-xs font-bold text-violet-300">
-                        {ROLE_ICONS[agent.role] || agent.name[0]}
-                      </div>
-                      <div>
-                        <p className="font-medium text-sm">{agent.name}</p>
-                        <p className="text-xs text-white/40 capitalize">
-                          {agent.role.replace("_", " ")}
-                        </p>
-                      </div>
+                <div
+                  key={agent.id}
+                  className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm p-5 hover:border-white/[0.12] hover:bg-white/[0.04] transition-all duration-300"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500/20 to-cyan-400/20 flex items-center justify-center text-[12px] font-semibold text-white/60 group-hover:from-violet-500/30 group-hover:to-cyan-400/30 transition-all duration-300">
+                      {agent.name[0]}
                     </div>
-                    {agent.description && (
-                      <p className="text-sm text-white/50 leading-relaxed">
-                        {agent.description}
-                      </p>
-                    )}
+                    <div>
+                      <p className="text-[13px] font-medium">{agent.name}</p>
+                      <p className="text-[11px] text-white/25 capitalize">{agent.role.replace("_", " ")}</p>
+                    </div>
                   </div>
+                  {agent.description && (
+                    <p className="text-[12px] text-white/30 leading-relaxed">{agent.description}</p>
+                  )}
                 </div>
               ))}
             </div>
           </section>
         )}
 
-        {/* Chat CTA */}
+        {/* Chat */}
         {sections.includes("chat") && (
           <section className="text-center">
-            <div className="inline-flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl px-10 py-8">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                </svg>
-              </div>
-              <p className="text-sm text-white/60">
-                Chat with our AI team anytime.
-              </p>
+            <div className="inline-flex items-center gap-3 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm px-8 py-4">
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <p className="text-[13px] text-white/50">AI team online — ready to help</p>
             </div>
           </section>
         )}
@@ -114,36 +94,22 @@ export function GradientTemplate({ company, agents, config }: TemplateProps) {
         {/* Contact */}
         {sections.includes("contact") &&
           (config.contact.email || config.contact.phone || config.contact.address) && (
-            <section>
-              <h2 className="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-6 text-center">
-                Contact
-              </h2>
-              <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 max-w-md mx-auto space-y-3">
-                {config.contact.email && (
-                  <p className="text-sm text-center">
-                    <a href={`mailto:${config.contact.email}`} className="text-cyan-400 hover:underline">
-                      {config.contact.email}
-                    </a>
-                  </p>
-                )}
-                {config.contact.phone && (
-                  <p className="text-sm text-white/60 text-center">{config.contact.phone}</p>
-                )}
-                {config.contact.address && (
-                  <p className="text-sm text-white/60 text-center">{config.contact.address}</p>
-                )}
-              </div>
-            </section>
-          )}
+          <section className="max-w-md mx-auto text-center space-y-3">
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-violet-400/80 mb-5">Contact</p>
+            {config.contact.email && (
+              <a href={`mailto:${config.contact.email}`} className="block text-[15px] text-white/50 hover:text-violet-300 transition-colors">
+                {config.contact.email}
+              </a>
+            )}
+            {config.contact.phone && <p className="text-[14px] text-white/30">{config.contact.phone}</p>}
+            {config.contact.address && <p className="text-[14px] text-white/30">{config.contact.address}</p>}
+          </section>
+        )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-white/5">
-        <div className="max-w-5xl mx-auto px-6 py-8 text-center text-xs text-white/30">
-          Powered by{" "}
-          <Link href="/" className="text-violet-400 hover:underline">
-            tellet.com
-          </Link>
+      <footer className="border-t border-white/[0.04]">
+        <div className="max-w-5xl mx-auto px-6 py-6 text-center text-[11px] text-white/15">
+          Powered by <Link href="/" className="text-violet-400/60 hover:text-violet-400 transition-colors">tellet</Link>
         </div>
       </footer>
     </div>

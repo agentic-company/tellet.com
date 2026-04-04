@@ -1,84 +1,75 @@
 import Link from "next/link";
 import type { TemplateProps } from "./index";
 
-const ROLE_COLORS: Record<string, string> = {
-  customer_support: "from-blue-500 to-blue-600",
-  marketing: "from-fuchsia-500 to-purple-600",
-  sales: "from-emerald-500 to-green-600",
-  operations: "from-amber-500 to-orange-600",
-  development: "from-sky-500 to-cyan-600",
-  analytics: "from-rose-500 to-pink-600",
+const ROLE_BG: Record<string, string> = {
+  customer_support: "bg-blue-500",
+  marketing: "bg-fuchsia-500",
+  sales: "bg-emerald-500",
+  operations: "bg-amber-500",
+  development: "bg-sky-500",
+  analytics: "bg-rose-500",
 };
 
 export function BoldTemplate({ company, agents, config }: TemplateProps) {
   const sections = config.sections;
 
   return (
-    <div className="min-h-screen bg-[#111] text-white">
+    <div className="min-h-screen bg-[#0c0c0c] text-white selection:bg-white/20">
       {/* Nav */}
-      <header className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
-        <h1 className="text-xl font-black tracking-tight">{company.name}</h1>
-        <Link
-          href="/"
-          className="text-xs text-white/30 hover:text-white/50 transition-colors"
-        >
+      <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <span className="text-base font-black tracking-[-0.02em]">{company.name}</span>
+        <Link href="/" className="text-[10px] text-white/20 hover:text-white/40 transition-colors uppercase tracking-[0.15em]">
           tellet
         </Link>
-      </header>
+      </nav>
 
-      {/* Hero — full-width color block */}
-      <section className="bg-gradient-to-r from-accent to-violet-600 py-20 sm:py-28">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-4xl sm:text-6xl font-black leading-tight max-w-3xl">
+      {/* Hero — accent stripe */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#a855f7]" />
+        <div className="relative max-w-6xl mx-auto px-6 py-24 sm:py-32">
+          <h1 className="text-[clamp(2.5rem,7vw,5.5rem)] font-black leading-[0.95] tracking-[-0.04em] max-w-4xl">
             {config.tagline || company.name}
-          </h2>
+          </h1>
+          {config.tagline && company.description && (
+            <p className="mt-6 text-lg text-white/60 max-w-xl font-light">{company.description}</p>
+          )}
         </div>
       </section>
 
-      <main className="max-w-6xl mx-auto px-6 py-16 space-y-24">
-        {/* About — large text */}
+      <main className="max-w-6xl mx-auto px-6 py-20 space-y-28">
+        {/* About */}
         {sections.includes("about") && config.about && (
           <section>
-            <div className="grid sm:grid-cols-[200px_1fr] gap-6">
-              <h3 className="text-sm font-bold uppercase tracking-widest text-white/30 pt-1">
-                About
-              </h3>
-              <p className="text-xl sm:text-2xl text-white/70 leading-relaxed font-light whitespace-pre-line">
-                {config.about}
-              </p>
-            </div>
+            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-white/20 mb-8">About</p>
+            <p className="text-xl sm:text-2xl text-white/55 leading-[1.7] font-light max-w-3xl whitespace-pre-line">
+              {config.about}
+            </p>
           </section>
         )}
 
-        {/* Team — large cards with color accent */}
+        {/* Team — bento grid */}
         {sections.includes("team") && agents.length > 0 && (
           <section>
-            <h3 className="text-sm font-bold uppercase tracking-widest text-white/30 mb-8">
-              The Team
-            </h3>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-white/20 mb-8">Team</p>
+            <div className="grid gap-3 sm:grid-cols-2">
               {agents.map((agent) => {
-                const gradient = ROLE_COLORS[agent.role] || "from-gray-500 to-gray-600";
+                const accent = ROLE_BG[agent.role] || "bg-zinc-500";
                 return (
                   <div
                     key={agent.id}
-                    className="rounded-2xl bg-white/5 p-6 hover:bg-white/10 transition-colors"
+                    className="rounded-2xl bg-white/[0.04] p-6 hover:bg-white/[0.07] transition-colors duration-200"
                   >
                     <div className="flex items-center gap-4 mb-4">
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center font-black text-lg text-white`}>
+                      <div className={`w-11 h-11 rounded-xl ${accent} flex items-center justify-center text-base font-black text-white`}>
                         {agent.name[0]}
                       </div>
                       <div>
-                        <p className="font-bold">{agent.name}</p>
-                        <p className="text-sm text-white/40 capitalize font-medium">
-                          {agent.role.replace("_", " ")}
-                        </p>
+                        <p className="text-[15px] font-bold tracking-[-0.01em]">{agent.name}</p>
+                        <p className="text-[11px] text-white/30 capitalize font-medium">{agent.role.replace("_", " ")}</p>
                       </div>
                     </div>
                     {agent.description && (
-                      <p className="text-sm text-white/50 leading-relaxed">
-                        {agent.description}
-                      </p>
+                      <p className="text-[13px] text-white/35 leading-relaxed font-light">{agent.description}</p>
                     )}
                   </div>
                 );
@@ -87,61 +78,51 @@ export function BoldTemplate({ company, agents, config }: TemplateProps) {
           </section>
         )}
 
-        {/* Chat CTA — bold banner */}
+        {/* Chat — accent block */}
         {sections.includes("chat") && (
           <section>
-            <div className="rounded-2xl bg-gradient-to-r from-accent to-violet-600 p-8 sm:p-12 text-center">
-              <h3 className="text-2xl sm:text-3xl font-black mb-3">Talk to us</h3>
-              <p className="text-white/70">
-                Our AI team is ready to help — anytime.
-              </p>
+            <div className="rounded-2xl bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#a855f7] p-10 sm:p-14">
+              <h3 className="text-2xl sm:text-3xl font-black tracking-[-0.03em] mb-2">Talk to us</h3>
+              <p className="text-white/60 font-light">Our AI team is online 24/7.</p>
             </div>
           </section>
         )}
 
-        {/* Contact — grid */}
+        {/* Contact */}
         {sections.includes("contact") &&
           (config.contact.email || config.contact.phone || config.contact.address) && (
-            <section>
-              <h3 className="text-sm font-bold uppercase tracking-widest text-white/30 mb-8">
-                Contact
-              </h3>
-              <div className="grid sm:grid-cols-3 gap-4">
-                {config.contact.email && (
-                  <div className="rounded-xl bg-white/5 p-5">
-                    <p className="text-xs text-white/30 uppercase tracking-wider mb-2">Email</p>
-                    <a href={`mailto:${config.contact.email}`} className="text-sm font-medium text-accent hover:underline">
-                      {config.contact.email}
-                    </a>
-                  </div>
-                )}
-                {config.contact.phone && (
-                  <div className="rounded-xl bg-white/5 p-5">
-                    <p className="text-xs text-white/30 uppercase tracking-wider mb-2">Phone</p>
-                    <p className="text-sm font-medium">{config.contact.phone}</p>
-                  </div>
-                )}
-                {config.contact.address && (
-                  <div className="rounded-xl bg-white/5 p-5">
-                    <p className="text-xs text-white/30 uppercase tracking-wider mb-2">Location</p>
-                    <p className="text-sm font-medium">{config.contact.address}</p>
-                  </div>
-                )}
-              </div>
-            </section>
-          )}
+          <section>
+            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-white/20 mb-8">Contact</p>
+            <div className="grid sm:grid-cols-3 gap-3">
+              {config.contact.email && (
+                <div className="rounded-xl bg-white/[0.04] p-5">
+                  <p className="text-[10px] text-white/20 uppercase tracking-wider font-bold mb-2">Email</p>
+                  <a href={`mailto:${config.contact.email}`} className="text-[14px] font-medium text-[#a78bfa] hover:text-[#c4b5fd] transition-colors">
+                    {config.contact.email}
+                  </a>
+                </div>
+              )}
+              {config.contact.phone && (
+                <div className="rounded-xl bg-white/[0.04] p-5">
+                  <p className="text-[10px] text-white/20 uppercase tracking-wider font-bold mb-2">Phone</p>
+                  <p className="text-[14px] font-medium">{config.contact.phone}</p>
+                </div>
+              )}
+              {config.contact.address && (
+                <div className="rounded-xl bg-white/[0.04] p-5">
+                  <p className="text-[10px] text-white/20 uppercase tracking-wider font-bold mb-2">Location</p>
+                  <p className="text-[14px] font-medium">{config.contact.address}</p>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-white/5 mt-8">
-        <div className="max-w-6xl mx-auto px-6 py-8 flex items-center justify-between">
-          <span className="text-sm font-black text-white/20">{company.name}</span>
-          <span className="text-xs text-white/20">
-            Powered by{" "}
-            <Link href="/" className="text-accent hover:underline">
-              tellet.com
-            </Link>
-          </span>
+      <footer className="border-t border-white/[0.04]">
+        <div className="max-w-6xl mx-auto px-6 py-8 flex items-center justify-between text-[11px] text-white/15">
+          <span className="font-black">{company.name}</span>
+          <Link href="/" className="hover:text-white/30 transition-colors">Powered by tellet</Link>
         </div>
       </footer>
     </div>
