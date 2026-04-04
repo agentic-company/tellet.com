@@ -1,6 +1,7 @@
 import { createServiceSupabase } from "@/lib/supabase/server";
 import { streamAgentWithTools } from "@/lib/engine";
 import { getToolsForRole } from "@/lib/actions";
+import { getCompanyApiKey } from "@/lib/tellet-db";
 
 export async function POST(request: Request) {
   const { message, agent_id, company_id, session_id } = await request.json();
@@ -74,6 +75,11 @@ export async function POST(request: Request) {
     (t) => t.name === "search_knowledge"
   );
 
+  const apiKey = await getCompanyApiKey(company_id);
+  if (!apiKey) {
+    return Response.json({ error: "Service not configured" }, { status: 503 });
+  }
+
   const stream = await streamAgentWithTools({
     agent: {
       id: agent.id,
@@ -86,6 +92,7 @@ export async function POST(request: Request) {
     },
     messages,
     builtinTools,
+    apiKey,
   });
 
   let fullResponse = "";

@@ -1,6 +1,7 @@
 import { createServiceSupabase } from "@/lib/supabase/server";
 import { streamAgentWithTools } from "@/lib/engine";
 import { getToolsForRole } from "@/lib/actions";
+import { getCompanyApiKey } from "@/lib/tellet-db";
 
 /**
  * Calculate the next run time from a cron expression.
@@ -84,6 +85,11 @@ export async function executeScheduledTask(taskId: string): Promise<{
   try {
     // Build tools for this agent's role
     const builtinTools = getToolsForRole(agent.role, task.company_id);
+    const apiKey = await getCompanyApiKey(task.company_id);
+
+    if (!apiKey) {
+      throw new Error("API key not configured for this company");
+    }
 
     // Stream agent response
     const stream = await streamAgentWithTools({
@@ -98,6 +104,7 @@ export async function executeScheduledTask(taskId: string): Promise<{
       },
       messages: [{ role: "user", content: task.prompt }],
       builtinTools,
+      apiKey,
     });
 
     // Collect full response

@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createServerSupabase, createServiceSupabase } from "@/lib/supabase/server";
 
 export interface TelletConfig {
   company: {
@@ -58,4 +58,20 @@ export async function getConfig(companyId: string): Promise<TelletConfig> {
       tools: [],
     })),
   };
+}
+
+/**
+ * Get the company's Anthropic API key from config.
+ * Returns undefined if not set (will fall back to env).
+ */
+export async function getCompanyApiKey(companyId: string): Promise<string | undefined> {
+  const admin = createServiceSupabase();
+  const { data } = await admin
+    .from("companies")
+    .select("config")
+    .eq("id", companyId)
+    .single();
+
+  const key = (data?.config as Record<string, unknown>)?.anthropic_api_key as string | undefined;
+  return key || undefined;
 }

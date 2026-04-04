@@ -1,6 +1,7 @@
 import { createServiceSupabase } from "@/lib/supabase/server";
 import { streamAgentWithTools } from "@/lib/engine";
 import { getToolsForRole } from "./index";
+import { getCompanyApiKey } from "@/lib/tellet-db";
 
 /**
  * Delegate a task to another agent in the same company.
@@ -41,6 +42,8 @@ export async function delegateToAgent(
       (t) => t.name !== "delegate_to_agent"
     );
 
+    const apiKey = await getCompanyApiKey(companyId);
+
     // Run the target agent
     const stream = await streamAgentWithTools({
       agent: {
@@ -54,6 +57,7 @@ export async function delegateToAgent(
       },
       messages: [{ role: "user", content: task }],
       builtinTools: targetTools,
+      apiKey,
     });
 
     // Collect response

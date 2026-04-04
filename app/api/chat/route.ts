@@ -1,6 +1,7 @@
 import { createServerSupabase, createServiceSupabase } from "@/lib/supabase/server";
 import { streamAgentWithTools } from "@/lib/engine";
 import { getToolsForRole } from "@/lib/actions";
+import { getCompanyApiKey } from "@/lib/tellet-db";
 
 export async function POST(request: Request) {
   const { message, agent_id, conversation_id, company_id } =
@@ -68,6 +69,14 @@ export async function POST(request: Request) {
 
   // Role-based tools
   const builtinTools = getToolsForRole(agent.role, company_id);
+  const apiKey = await getCompanyApiKey(company_id);
+
+  if (!apiKey) {
+    return Response.json(
+      { error: "API key not configured. Go to Settings to add your Anthropic API key." },
+      { status: 400 }
+    );
+  }
 
   // Stream with tool use
   const stream = await streamAgentWithTools({
@@ -82,6 +91,7 @@ export async function POST(request: Request) {
     },
     messages,
     builtinTools,
+    apiKey,
   });
 
   let fullResponse = "";

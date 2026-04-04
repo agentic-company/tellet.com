@@ -1,5 +1,6 @@
 import { createServiceSupabase } from "@/lib/supabase/server";
 import { DeleteCompanyButton } from "@/components/dashboard/DeleteCompanyButton";
+import { ApiKeyManager } from "@/components/dashboard/ApiKeyManager";
 
 export default async function SettingsPage({
   params,
@@ -44,6 +45,14 @@ export default async function SettingsPage({
             </div>
           )}
         </div>
+      </div>
+
+      <div className="rounded-xl border border-accent/20 bg-accent/5 p-6 space-y-3">
+        <h2 className="text-lg font-semibold">API Key</h2>
+        <ApiKeyManager
+          companyId={company.id}
+          hasKey={!!(company.config as Record<string, unknown>)?.anthropic_api_key}
+        />
       </div>
 
       <div className="rounded-xl border border-border bg-bg-secondary/50 p-6 space-y-3">

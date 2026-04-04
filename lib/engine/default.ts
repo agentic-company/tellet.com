@@ -15,6 +15,7 @@ export interface AgentStreamOptions {
   agent: AgentConfig;
   messages: { role: "user" | "assistant"; content: string }[];
   builtinTools?: BuiltinTool[];
+  apiKey?: string;
   onToolStart?: (toolName: string) => void;
   onToolEnd?: (toolName: string) => void;
 }
@@ -22,7 +23,7 @@ export interface AgentStreamOptions {
 export async function streamAgentWithTools(
   options: AgentStreamOptions
 ): Promise<ReadableStream<StreamChunk>> {
-  const { agent, messages, builtinTools = [], onToolStart, onToolEnd } = options;
+  const { agent, messages, builtinTools = [], apiKey, onToolStart, onToolEnd } = options;
   const provider = agent.provider || "anthropic";
 
   // Collect tools: builtin + MCP (deduplicate by name)
@@ -40,7 +41,7 @@ export async function streamAgentWithTools(
   if (provider === "openai") {
     return streamOpenAI(agent, messages, allTools, builtinTools);
   }
-  return streamAnthropic(agent, messages, allTools, builtinTools, onToolStart, onToolEnd);
+  return streamAnthropic(agent, messages, allTools, builtinTools, onToolStart, onToolEnd, apiKey);
 }
 
 async function streamAnthropic(
@@ -49,11 +50,12 @@ async function streamAnthropic(
   tools: Anthropic.Tool[],
   builtinTools: BuiltinTool[],
   onToolStart?: (name: string) => void,
-  onToolEnd?: (name: string) => void
+  onToolEnd?: (name: string) => void,
+  apiKey?: string
 ): Promise<ReadableStream<StreamChunk>> {
   let _client: Anthropic | null = null;
   function getClient() {
-    if (!_client) _client = new Anthropic();
+    if (!_client) _client = new Anthropic(apiKey ? { apiKey } : undefined);
     return _client;
   }
 

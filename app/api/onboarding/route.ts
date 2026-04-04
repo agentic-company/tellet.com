@@ -13,11 +13,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { companyName, description } = await request.json();
+  const { companyName, description, apiKey } = await request.json();
 
-  if (!companyName || !description) {
+  if (!companyName || !description || !apiKey) {
     return NextResponse.json(
-      { error: "Company name and description are required" },
+      { error: "Company name, description, and API key are required" },
       { status: 400 }
     );
   }
@@ -48,6 +48,7 @@ export async function POST(request: Request) {
       slug: finalSlug,
       description,
       owner_id: user.id,
+      config: { anthropic_api_key: apiKey },
     })
     .select()
     .single();
@@ -62,7 +63,7 @@ export async function POST(request: Request) {
 
   // Generate agents with AI
   try {
-    const result = await generateAgents(companyName, description);
+    const result = await generateAgents(companyName, description, apiKey);
 
     // Insert agents into DB
     const agentRows = result.agents.map((agent) => ({

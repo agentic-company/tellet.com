@@ -44,9 +44,10 @@ Output ONLY valid JSON:
 
 export async function generateAgents(
   companyName: string,
-  businessDescription: string
+  businessDescription: string,
+  apiKey?: string
 ): Promise<GenerateResult> {
-  const client = new Anthropic();
+  const client = new Anthropic(apiKey ? { apiKey } : undefined);
   const message = await client.messages.create({
     model: "claude-sonnet-4-6",
     max_tokens: 8192,

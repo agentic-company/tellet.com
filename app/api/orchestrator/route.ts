@@ -2,13 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { orchestratorTools } from "@/lib/orchestrator/tools";
 import { executeTool } from "@/lib/orchestrator/executor";
-import { getConfig } from "@/lib/tellet-db";
-
-let _client: Anthropic | null = null;
-function getClient() {
-  if (!_client) _client = new Anthropic();
-  return _client;
-}
+import { getConfig, getCompanyApiKey } from "@/lib/tellet-db";
 
 async function buildSystemPrompt(companyId: string): Promise<string> {
   const config = await getConfig(companyId);
@@ -57,6 +51,18 @@ export async function POST(request: Request) {
   const readable = new ReadableStream({
     async start(controller) {
       try {
+        const apiKey = await getCompanyApiKey(company_id);
+        if (!apiKey) {
+          controller.enqueue(
+            encoder.encode(
+              `data: ${JSON.stringify({ error: "API key not configured. Go to Settings to add your Anthropic API key." })}\n\n`
+            )
+          );
+          controller.close();
+          return;
+        }
+
+        const client = new Anthropic({ apiKey });
         const systemPrompt = await buildSystemPrompt(company_id);
 
         let currentMessages: Anthropic.MessageParam[] = messages.map(
@@ -68,7 +74,7 @@ export async function POST(request: Request) {
 
         // Agentic loop
         while (true) {
-          const response = await getClient().messages.create({
+          const response = await client.messages.create({
             model: "claude-sonnet-4-6",
             max_tokens: 4096,
             system: systemPrompt,

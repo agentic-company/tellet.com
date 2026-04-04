@@ -33,11 +33,12 @@ export default function OnboardingPage() {
   const [step, setStep] = useState<Step>("describe");
   const [companyName, setCompanyName] = useState("");
   const [description, setDescription] = useState("");
+  const [apiKey, setApiKey] = useState("");
   const [result, setResult] = useState<OnboardingResult | null>(null);
   const [error, setError] = useState("");
 
   const handleSubmit = async () => {
-    if (!companyName.trim() || description.trim().length < 20) return;
+    if (!companyName.trim() || description.trim().length < 20 || !apiKey.trim()) return;
 
     setStep("generating");
     setError("");
@@ -46,7 +47,7 @@ export default function OnboardingPage() {
       const res = await fetch("/api/onboarding", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ companyName, description }),
+        body: JSON.stringify({ companyName, description, apiKey }),
       });
 
       if (!res.ok) {
@@ -128,9 +129,34 @@ export default function OnboardingPage() {
                 </p>
               </div>
 
+              <div>
+                <label className="block text-sm text-text-secondary mb-1.5">
+                  Anthropic API Key
+                </label>
+                <input
+                  type="password"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder="sk-ant-api03-..."
+                  className="w-full rounded-lg bg-bg-secondary border border-border px-4 py-3 text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent font-mono text-sm"
+                />
+                <p className="text-xs text-text-tertiary mt-1">
+                  Get your key at{" "}
+                  <a
+                    href="https://console.anthropic.com/settings/keys"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent hover:underline"
+                  >
+                    console.anthropic.com
+                  </a>
+                  . Your key is stored securely and only used for your agents.
+                </p>
+              </div>
+
               <button
                 onClick={handleSubmit}
-                disabled={!companyName.trim() || description.trim().length < 20}
+                disabled={!companyName.trim() || description.trim().length < 20 || !apiKey.trim()}
                 className="w-full rounded-lg bg-accent hover:bg-accent-hover px-4 py-3 text-sm font-medium text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               >
                 Generate my AI team
