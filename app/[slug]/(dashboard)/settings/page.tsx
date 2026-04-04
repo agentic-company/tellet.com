@@ -1,4 +1,5 @@
 import { createServiceSupabase } from "@/lib/supabase/server";
+import { DeleteCompanyButton } from "@/components/dashboard/DeleteCompanyButton";
 
 export default async function SettingsPage({
   params,
@@ -91,6 +92,13 @@ export default async function SettingsPage({
             </div>
           ))}
         </div>
+      </div>
+      <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-6 space-y-3">
+        <h2 className="text-lg font-semibold text-red-400">Danger Zone</h2>
+        <p className="text-sm text-text-secondary">
+          Permanently delete this company and all associated data.
+        </p>
+        <DeleteCompanyButton companyId={company.id} companyName={company.name} />
       </div>
     </div>
   );
