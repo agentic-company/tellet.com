@@ -1,6 +1,7 @@
 import type Anthropic from "@anthropic-ai/sdk";
 import { searchKnowledge } from "@/lib/mcp/knowledge";
 import { sendEmail } from "./email";
+import { delegateToAgent } from "./delegate";
 
 export interface BuiltinTool {
   name: string;
@@ -53,18 +54,46 @@ function emailTool(): BuiltinTool {
   };
 }
 
+function delegateTool(companyId: string): BuiltinTool {
+  return {
+    name: "delegate_to_agent",
+    description:
+      "Delegate a task to another agent in your company. Use when a request falls outside your expertise — e.g., a support agent delegates a billing question to the sales agent.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        agent_name: {
+          type: "string",
+          description: "Name of the agent to delegate to (e.g. 'Sales Agent')",
+        },
+        task: {
+          type: "string",
+          description: "The task or question to send to the other agent",
+        },
+      },
+      required: ["agent_name", "task"],
+    },
+    execute: async (input) =>
+      delegateToAgent(
+        input.agent_name as string,
+        input.task as string,
+        companyId
+      ),
+  };
+}
+
 // --- Role → Tool mapping ---
 
 const ROLE_TOOLS: Record<string, string[]> = {
   // Customer-facing roles
-  customer_support: ["search_knowledge", "send_email"],
-  sales: ["search_knowledge", "send_email"],
-  receptionist: ["search_knowledge", "send_email"],
-  concierge: ["search_knowledge", "send_email"],
+  customer_support: ["search_knowledge", "send_email", "delegate_to_agent"],
+  sales: ["search_knowledge", "send_email", "delegate_to_agent"],
+  receptionist: ["search_knowledge", "send_email", "delegate_to_agent"],
+  concierge: ["search_knowledge", "send_email", "delegate_to_agent"],
   // Internal/ops roles
-  operations: ["search_knowledge", "send_email"],
-  marketing: ["search_knowledge", "send_email"],
-  analyst: ["search_knowledge"],
+  operations: ["search_knowledge", "send_email", "delegate_to_agent"],
+  marketing: ["search_knowledge", "send_email", "delegate_to_agent"],
+  analyst: ["search_knowledge", "delegate_to_agent"],
   // Catch-all
   general: ["search_knowledge"],
 };
@@ -72,6 +101,7 @@ const ROLE_TOOLS: Record<string, string[]> = {
 const ALL_TOOL_FACTORIES: Record<string, (companyId: string) => BuiltinTool> = {
   search_knowledge: (companyId) => knowledgeSearchTool(companyId),
   send_email: () => emailTool(),
+  delegate_to_agent: (companyId) => delegateTool(companyId),
 };
 
 /**
