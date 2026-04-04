@@ -21,6 +21,149 @@ const AVAILABLE_SECTIONS = [
   { id: "contact", label: "Contact", description: "Contact information" },
 ];
 
+function TemplatePreview({ templateId }: { templateId: string }) {
+  if (templateId === "default") {
+    return (
+      <div className="h-36 bg-[#09090b] p-3 flex flex-col gap-2">
+        {/* Nav */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-white/10" />
+            <div className="w-10 h-1.5 rounded-full bg-white/15" />
+          </div>
+          <div className="w-6 h-1 rounded-full bg-white/10" />
+        </div>
+        {/* Hero text */}
+        <div className="mt-3 space-y-1.5">
+          <div className="w-3/4 h-2 rounded-full bg-white/20" />
+          <div className="w-1/2 h-2 rounded-full bg-white/20" />
+        </div>
+        {/* Grid content */}
+        <div className="mt-auto flex gap-1.5">
+          <div className="w-6 h-1 rounded-full bg-white/8" />
+          <div className="flex-1 space-y-1">
+            <div className="w-full h-1 rounded-full bg-white/8" />
+            <div className="w-2/3 h-1 rounded-full bg-white/8" />
+          </div>
+        </div>
+        {/* Team rows */}
+        <div className="space-y-1">
+          <div className="flex items-center gap-1.5 rounded bg-white/[0.03] p-1">
+            <div className="w-3 h-3 rounded bg-white/8" />
+            <div className="w-12 h-1 rounded-full bg-white/10" />
+          </div>
+          <div className="flex items-center gap-1.5 rounded bg-white/[0.03] p-1">
+            <div className="w-3 h-3 rounded bg-white/8" />
+            <div className="w-10 h-1 rounded-full bg-white/10" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (templateId === "gradient") {
+    return (
+      <div className="h-36 bg-[#050510] p-3 flex flex-col gap-2 relative overflow-hidden">
+        {/* Ambient blobs */}
+        <div className="absolute top-[-30%] left-[-20%] w-20 h-20 rounded-full bg-violet-600/20 blur-xl" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-16 h-16 rounded-full bg-cyan-500/15 blur-xl" />
+        {/* Nav */}
+        <div className="relative flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-sm bg-gradient-to-br from-violet-500/80 to-cyan-400/80" />
+          <div className="w-10 h-1.5 rounded-full bg-white/15" />
+        </div>
+        {/* Hero centered */}
+        <div className="relative mt-3 flex flex-col items-center gap-1.5">
+          <div className="w-3/4 h-2.5 rounded-full bg-gradient-to-r from-white/25 to-white/10" />
+          <div className="w-1/2 h-2 rounded-full bg-gradient-to-r from-white/15 to-white/5" />
+        </div>
+        {/* Glass card */}
+        <div className="relative mt-auto rounded-lg border border-white/[0.08] bg-white/[0.03] p-1.5">
+          <div className="w-8 h-1 rounded-full bg-violet-400/40 mb-1" />
+          <div className="w-full h-1 rounded-full bg-white/8" />
+          <div className="w-2/3 h-1 rounded-full bg-white/8 mt-0.5" />
+        </div>
+        {/* Team cards */}
+        <div className="relative grid grid-cols-3 gap-1">
+          <div className="rounded-md border border-white/[0.06] bg-white/[0.02] p-1.5">
+            <div className="w-3 h-3 rounded bg-violet-500/20 mb-1" />
+            <div className="w-full h-1 rounded-full bg-white/8" />
+          </div>
+          <div className="rounded-md border border-white/[0.06] bg-white/[0.02] p-1.5">
+            <div className="w-3 h-3 rounded bg-cyan-400/20 mb-1" />
+            <div className="w-full h-1 rounded-full bg-white/8" />
+          </div>
+          <div className="rounded-md border border-white/[0.06] bg-white/[0.02] p-1.5">
+            <div className="w-3 h-3 rounded bg-fuchsia-500/20 mb-1" />
+            <div className="w-full h-1 rounded-full bg-white/8" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (templateId === "minimal") {
+    return (
+      <div className="h-36 bg-[#fdfdfc] p-3 flex flex-col gap-2">
+        {/* Nav */}
+        <div className="w-10 h-1 rounded-full bg-[#ccc]" />
+        {/* Hero */}
+        <div className="mt-3 space-y-1.5">
+          <div className="w-4/5 h-2 rounded-full bg-[#2a2a2a]/20" />
+          <div className="w-3/5 h-2 rounded-full bg-[#2a2a2a]/20" />
+        </div>
+        {/* Body text */}
+        <div className="mt-2 space-y-1">
+          <div className="w-full h-1 rounded-full bg-[#ddd]" />
+          <div className="w-full h-1 rounded-full bg-[#ddd]" />
+          <div className="w-3/4 h-1 rounded-full bg-[#ddd]" />
+        </div>
+        {/* Divider + team list */}
+        <div className="border-t border-[#f0f0ee] mt-auto" />
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-[#f0f0ee]" />
+            <div className="w-14 h-1 rounded-full bg-[#ddd]" />
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-[#f0f0ee]" />
+            <div className="w-12 h-1 rounded-full bg-[#ddd]" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // bold / impact
+  return (
+    <div className="h-36 bg-[#0c0c0c] flex flex-col overflow-hidden">
+      {/* Nav */}
+      <div className="px-3 pt-2.5 flex items-center justify-between">
+        <div className="w-12 h-1.5 rounded-full bg-white/20" />
+        <div className="w-5 h-1 rounded-full bg-white/10" />
+      </div>
+      {/* Color hero block */}
+      <div className="mt-2 mx-0 bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#a855f7] px-3 py-4">
+        <div className="w-3/4 h-3 rounded-full bg-white/40" />
+        <div className="w-1/2 h-2.5 rounded-full bg-white/30 mt-1.5" />
+      </div>
+      {/* Content */}
+      <div className="px-3 py-2 mt-auto">
+        <div className="grid grid-cols-2 gap-1.5">
+          <div className="rounded-lg bg-white/[0.04] p-1.5">
+            <div className="w-3 h-3 rounded bg-blue-500/40 mb-1" />
+            <div className="w-full h-1 rounded-full bg-white/10" />
+          </div>
+          <div className="rounded-lg bg-white/[0.04] p-1.5">
+            <div className="w-3 h-3 rounded bg-fuchsia-500/40 mb-1" />
+            <div className="w-full h-1 rounded-full bg-white/10" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function HomepageBuilder({
   companyId,
   companyName,
@@ -116,19 +259,23 @@ export function HomepageBuilder({
       {step === "template" && (
         <div className="space-y-4">
           <h3 className="text-lg font-semibold">Choose a template</h3>
-          <div className="grid gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {TEMPLATES.map((t) => (
               <button
                 key={t.id}
                 onClick={() => setConfig((c) => ({ ...c, template: t.id }))}
-                className={`text-left rounded-xl border p-4 transition-colors cursor-pointer ${
+                className={`text-left rounded-xl border overflow-hidden transition-all cursor-pointer ${
                   config.template === t.id
-                    ? "border-accent bg-accent/5"
-                    : "border-border bg-bg-secondary/50 hover:border-border-hover"
+                    ? "border-accent ring-1 ring-accent"
+                    : "border-border hover:border-border-hover"
                 }`}
               >
-                <p className="font-medium text-sm">{t.name}</p>
-                <p className="text-xs text-text-secondary mt-1">{t.description}</p>
+                {/* Visual preview skeleton */}
+                <TemplatePreview templateId={t.id} />
+                <div className="px-3 py-2.5 border-t border-border">
+                  <p className="font-medium text-xs">{t.name}</p>
+                  <p className="text-[10px] text-text-tertiary mt-0.5">{t.description}</p>
+                </div>
               </button>
             ))}
           </div>
