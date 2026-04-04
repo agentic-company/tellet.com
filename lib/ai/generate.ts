@@ -78,8 +78,18 @@ export async function generateAgents(
     text = message.content[0].type === "text" ? message.content[0].text : "";
   }
 
-  const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/) || [null, text];
-  const jsonStr = (jsonMatch[1] || text).trim();
+  // Extract JSON from response — handle markdown code blocks, raw JSON, etc.
+  let jsonStr = text.trim();
+  const codeBlockMatch = jsonStr.match(/```(?:json)?\s*\n?([\s\S]*?)```/);
+  if (codeBlockMatch) {
+    jsonStr = codeBlockMatch[1]!.trim();
+  } else {
+    // Try to find raw JSON object
+    const braceMatch = jsonStr.match(/\{[\s\S]*\}/);
+    if (braceMatch) {
+      jsonStr = braceMatch[0];
+    }
+  }
 
   const result = JSON.parse(jsonStr) as GenerateResult;
 
