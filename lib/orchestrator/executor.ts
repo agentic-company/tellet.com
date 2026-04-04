@@ -1,6 +1,6 @@
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createServerSupabase, createServiceSupabase } from "@/lib/supabase/server";
 import { addDocument, searchKnowledge, listDocuments, deleteDocument } from "@/lib/mcp/knowledge";
-import { TOOL_REGISTRY } from "@/lib/mcp/registry";
+import { getNextRun } from "@/lib/scheduling";
 
 export async function executeTool(
   name: string,
@@ -98,16 +98,61 @@ export async function executeTool(
       return deleteDocument(input.document_id as string);
     }
 
-    case "list_available_tools": {
-      return JSON.stringify(
-        TOOL_REGISTRY.map((t) => ({
-          id: t.id,
-          name: t.name,
-          description: t.description,
-          category: t.category,
-          compatibleRoles: t.compatibleRoles,
-        }))
-      );
+    case "schedule_task": {
+      const { agent_id, name: taskName, prompt, schedule, description } = input as {
+        agent_id: string;
+        name: string;
+        prompt: string;
+        schedule: string;
+        description?: string;
+      };
+      const admin = createServiceSupabase();
+      const nextRun = getNextRun(schedule);
+      const { data, error } = await admin
+        .from("scheduled_tasks")
+        .insert({
+          company_id: companyId,
+          agent_id,
+          name: taskName,
+          description: description || null,
+          cron_expression: schedule,
+          prompt,
+          next_run_at: nextRun.toISOString(),
+        })
+        .select("id, name, cron_expression, next_run_at")
+        .single();
+      if (error) return JSON.stringify({ error: error.message });
+      return JSON.stringify({ success: true, task: data });
+    }
+
+    case "list_scheduled_tasks": {
+      const admin = createServiceSupabase();
+      let query = admin
+        .from("scheduled_tasks")
+        .select("id, name, description, cron_expression, enabled, last_run_at, next_run_at, agents(name, role)")
+        .order("created_at", { ascending: false });
+      if (companyId) query = query.eq("company_id", companyId);
+      const { data } = await query;
+      return JSON.stringify(data || []);
+    }
+
+    case "cancel_scheduled_task": {
+      const { task_id, delete_permanently } = input as {
+        task_id: string;
+        delete_permanently?: boolean;
+      };
+      const admin = createServiceSupabase();
+      if (delete_permanently) {
+        const { error } = await admin.from("scheduled_tasks").delete().eq("id", task_id);
+        if (error) return JSON.stringify({ error: error.message });
+        return JSON.stringify({ success: true, deleted: true });
+      }
+      const { error } = await admin
+        .from("scheduled_tasks")
+        .update({ enabled: false })
+        .eq("id", task_id);
+      if (error) return JSON.stringify({ error: error.message });
+      return JSON.stringify({ success: true, disabled: true });
     }
 
     default:

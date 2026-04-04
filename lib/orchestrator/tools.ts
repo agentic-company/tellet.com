@@ -119,9 +119,42 @@ export const orchestratorTools: Anthropic.Tool[] = [
     },
   },
   {
-    name: "list_available_tools",
+    name: "schedule_task",
     description:
-      "List all tools available in the tellet marketplace that can be installed.",
+      "Schedule a recurring task for an agent. The agent will automatically execute the given prompt on the specified schedule.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        agent_id: {
+          type: "string",
+          description: "The agent ID to assign this task to",
+        },
+        name: {
+          type: "string",
+          description: "Short name for the task (e.g. 'Daily Sales Report')",
+        },
+        prompt: {
+          type: "string",
+          description:
+            "The instruction to send to the agent each time the task runs",
+        },
+        schedule: {
+          type: "string",
+          description:
+            "Cron expression: 'minute hour day-of-month month day-of-week'. Examples: '0 9 * * 1-5' (weekdays 9am), '0 */6 * * *' (every 6 hours), '0 8 * * 1' (Monday 8am)",
+        },
+        description: {
+          type: "string",
+          description: "Optional description of what this task does",
+        },
+      },
+      required: ["agent_id", "name", "prompt", "schedule"],
+    },
+  },
+  {
+    name: "list_scheduled_tasks",
+    description:
+      "List all scheduled tasks with their status, schedule, and last run time.",
     input_schema: {
       type: "object" as const,
       properties: {},
@@ -129,23 +162,21 @@ export const orchestratorTools: Anthropic.Tool[] = [
     },
   },
   {
-    name: "install_tool",
-    description:
-      "Install a tool from the marketplace and assign it to agents. Updates tellet.json. The owner will need to set the required API key in .env.",
+    name: "cancel_scheduled_task",
+    description: "Disable or delete a scheduled task by ID.",
     input_schema: {
       type: "object" as const,
       properties: {
-        tool_id: {
+        task_id: {
           type: "string",
-          description: "Tool ID from the marketplace (e.g. 'stripe', 'email', 'github')",
+          description: "The scheduled task ID to cancel",
         },
-        agent_ids: {
-          type: "array",
-          items: { type: "string" },
-          description: "Agent IDs to assign this tool to",
+        delete_permanently: {
+          type: "boolean",
+          description: "If true, deletes the task. If false, just disables it (default: false)",
         },
       },
-      required: ["tool_id"],
+      required: ["task_id"],
     },
   },
 ];
