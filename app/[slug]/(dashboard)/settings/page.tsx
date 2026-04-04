@@ -29,7 +29,17 @@ export default async function SettingsPage({
       <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
 
       <div className="rounded-xl border border-border bg-bg-secondary/50 p-6 space-y-3">
-        <h2 className="text-lg font-semibold">Company</h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Company</h2>
+          <a
+            href={`/${company.slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-accent hover:underline"
+          >
+            View Homepage &rarr;
+          </a>
+        </div>
         <div className="grid gap-2">
           <div>
             <span className="text-sm text-text-secondary">Name:</span>{" "}
