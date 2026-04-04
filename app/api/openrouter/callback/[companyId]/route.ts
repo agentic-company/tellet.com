@@ -3,13 +3,16 @@ import { exchangeCode } from "@/lib/openrouter/pkce";
 import { generateAgents } from "@/lib/ai/generate";
 import { redirect } from "next/navigation";
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ companyId: string }> }
+) {
+  const { companyId } = await params;
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
-  const companyId = searchParams.get("company_id");
 
-  if (!code || !companyId) {
-    return Response.json({ error: "Missing code or company_id" }, { status: 400 });
+  if (!code) {
+    return Response.json({ error: "Missing authorization code" }, { status: 400 });
   }
 
   const admin = createServiceSupabase();

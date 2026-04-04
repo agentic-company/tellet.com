@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     .eq("id", company_id);
 
   const origin = request.headers.get("origin") || "https://tellet.com";
-  const callbackUrl = `${origin}/api/openrouter/callback?company_id=${company_id}`;
+  const callbackUrl = `${origin}/api/openrouter/callback/${company_id}`;
   const authUrl = getAuthURL(callbackUrl, challenge);
 
   return Response.json({ url: authUrl });
