@@ -25,15 +25,16 @@ export async function streamAgentWithTools(
   const { agent, messages, builtinTools = [], onToolStart, onToolEnd } = options;
   const provider = agent.provider || "anthropic";
 
-  // Collect tools: builtin + MCP
+  // Collect tools: builtin + MCP (deduplicate by name)
   const mcpTools = await getToolsForAgent(agent.id);
+  const builtinNames = new Set(builtinTools.map((t) => t.name));
   const allTools: Anthropic.Tool[] = [
     ...builtinTools.map((t) => ({
       name: t.name,
       description: t.description,
       input_schema: t.input_schema,
     })),
-    ...mcpTools,
+    ...mcpTools.filter((t) => !builtinNames.has(t.name)),
   ];
 
   if (provider === "openai") {
