@@ -75,7 +75,9 @@ export async function GET(
         }));
         await admin.from("agents").insert(agentRows);
       } catch (e) {
-        console.error("Agent generation after OAuth failed:", e);
+        const msg = e instanceof Error ? e.message : "Unknown error";
+        console.error("Agent generation after OAuth failed:", msg);
+        redirect(`/${company.slug}/settings?connected=openrouter&agent_error=${encodeURIComponent(msg)}`);
       }
     }
 

@@ -1,6 +1,7 @@
 import { createServiceSupabase } from "@/lib/supabase/server";
 import { DeleteCompanyButton } from "@/components/dashboard/DeleteCompanyButton";
 import { ProviderManager } from "@/components/dashboard/ProviderManager";
+import { GenerateAgentsButton } from "@/components/dashboard/GenerateAgentsButton";
 
 export default async function SettingsPage({
   params,
@@ -82,6 +83,9 @@ export default async function SettingsPage({
 
       <div className="rounded-xl border border-border bg-bg-secondary/50 p-6 space-y-3">
         <h2 className="text-lg font-semibold">Agents ({agents?.length || 0})</h2>
+        {(!agents || agents.length === 0) && (
+          <GenerateAgentsButton companyId={company.id} />
+        )}
         <div className="grid gap-2">
           {(agents || []).map((agent) => (
             <div
