@@ -1,6 +1,7 @@
 import { createServiceSupabase } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { getTemplate, type HomepageConfig } from "@/components/homepage/templates";
+import { ExternalSiteWrapper } from "@/components/homepage/ExternalSiteWrapper";
 
 export default async function CompanyHomePage({
   params,
@@ -23,6 +24,18 @@ export default async function CompanyHomePage({
 
   if (!homepage?.enabled) notFound();
 
+  // External site mode: iframe + floating chat widget
+  if (homepage.externalUrl) {
+    return (
+      <ExternalSiteWrapper
+        url={homepage.externalUrl}
+        companyId={company.id}
+        companyName={company.name}
+      />
+    );
+  }
+
+  // Template mode
   const { data: agents } = await supabase
     .from("agents")
     .select("id, name, role, description")

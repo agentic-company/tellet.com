@@ -15,6 +15,7 @@ export interface HomepageConfig {
     phone?: string;
     address?: string;
   };
+  externalUrl?: string;
 }
 
 export interface TemplateProps {
