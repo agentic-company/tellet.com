@@ -10,65 +10,65 @@ export const FEATURES = [
     title: "AI Orchestrator",
     description: "Run your company through conversation",
     icon: "brain",
-    detail: "Talk to your Orchestrator to manage agents, update your website, check stats, and install tools. No code needed — just tell it what to do.",
+    detail: "Manage agents, schedule tasks, check stats, update knowledge — all by chatting. Your Orchestrator is the CEO interface to your AI company.",
+  },
+  {
+    title: "Agents That Act",
+    description: "Email, delegate, search, automate",
+    icon: "plug",
+    detail: "Agents don't just chat — they send emails via Resend, delegate tasks to each other, and search your knowledge base. Role-based tools mean each agent gets exactly what it needs.",
+  },
+  {
+    title: "Team Collaboration",
+    description: "Agents work together automatically",
+    icon: "messages",
+    detail: "Your support agent can delegate billing questions to sales. Marketing can ask analytics for data. Agents route tasks to the right teammate — no manual handoffs.",
+  },
+  {
+    title: "Scheduled Automation",
+    description: "Cron tasks, zero babysitting",
+    icon: "layout",
+    detail: "Schedule any agent to run on a cron. Daily reports, weekly summaries, automated follow-ups — set it once through the Orchestrator and it runs on autopilot.",
+  },
+  {
+    title: "Embed Anywhere",
+    description: "One script tag, any website",
+    icon: "globe",
+    detail: "Add your AI agents to any website with a single script tag. Dark/light theme, streaming responses, session persistence — your customers get instant help.",
   },
   {
     title: "Knowledge Base",
     description: "Your agents know your business",
-    icon: "messages",
-    detail: "Vector-powered knowledge base with pgvector. Add product info, policies, and FAQ — your agents reference them to give accurate answers.",
-  },
-  {
-    title: "Tool Marketplace",
-    description: "Stripe, Email, Slack, GitHub, Notion",
-    icon: "plug",
-    detail: "One command to connect tools. Orchestrator auto-assigns to the right agents. Powered by MCP — 19,000+ integrations available.",
-  },
-  {
-    title: "3-Tier Deployment",
-    description: "Free to enterprise, you choose",
-    icon: "globe",
-    detail: "Quick Start (Vercel, free), Cloud (Railway/Docker, $5/mo), or Enterprise (AWS CDK). No vendor lock-in — switch anytime.",
-  },
-  {
-    title: "Connect Mode",
-    description: "Add AI to your existing business",
     icon: "workflow",
-    detail: "Already have a website? Use Connect mode. Embed our chat widget with one script tag. Your agents, your data, your infrastructure.",
-  },
-  {
-    title: "Autonomous Agents",
-    description: "Scheduled tasks, zero babysitting",
-    icon: "layout",
-    detail: "Set up cron schedules for your agents. Daily marketing reports, weekly analytics, automated customer follow-ups — all running on autopilot.",
+    detail: "Vector-powered knowledge base with pgvector. Add product info, policies, and FAQ — agents reference them to give accurate, grounded answers.",
   },
 ] as const;
 
 export const STEPS = [
   {
     number: "01",
-    title: "Run one command",
-    description: "npx @tellet/create — choose New or Connect, pick your cloud, answer a few questions. 60 seconds.",
+    title: "Describe your business",
+    description: "Sign up on tellet.com or run npx @tellet/create. Tell us what you do in a sentence or two. That's it.",
   },
   {
     number: "02",
-    title: "AI builds everything",
-    description: "AI generates your agent team, website, dashboard, and Knowledge Base — all tailored to your specific business.",
+    title: "AI builds your team",
+    description: "AI generates 3-5 specialized agents with role-based tools: email, knowledge search, and inter-agent delegation — all tailored to your business.",
   },
   {
     number: "03",
-    title: "Talk to your Orchestrator",
-    description: "Manage your AI company through conversation. Install tools, update content, schedule tasks — all by chatting with the Orchestrator.",
+    title: "Your agents go to work",
+    description: "Agents answer customers, send emails, delegate tasks to each other, and run scheduled automations. Manage everything through the Orchestrator.",
   },
 ] as const;
 
 export const COMPARE_ROWS = [
-  { feature: "Setup", tellet: "One command", paperclip: "Git clone + config", mission: "Sales demo" },
+  { feature: "Setup", tellet: "Describe your business", paperclip: "Git clone + config", mission: "Sales demo" },
   { feature: "Agent creation", tellet: "AI auto-generates", paperclip: "Manual definition", mission: "Consultant setup" },
+  { feature: "Agent actions", tellet: "Email, delegate, schedule", paperclip: "Chat only", mission: "Custom integrations" },
+  { feature: "Agent collaboration", tellet: "Built-in delegation", paperclip: "Manual routing", mission: "Workflow builder" },
+  { feature: "Embed widget", tellet: "One script tag", paperclip: "Manual integration", mission: "SDK required" },
+  { feature: "Scheduling", tellet: "Cron via Orchestrator", paperclip: "External cron", mission: "Enterprise scheduler" },
   { feature: "Management", tellet: "Orchestrator (chat)", paperclip: "Dashboard UI", mission: "Enterprise UI" },
-  { feature: "Existing business", tellet: "Connect mode + widget", paperclip: "Manual integration", mission: "Legacy adapters" },
-  { feature: "Tool ecosystem", tellet: "MCP marketplace", paperclip: "Plugin system", mission: "Built-in only" },
-  { feature: "Deployment", tellet: "Free / Cloud / AWS", paperclip: "Self-hosted only", mission: "Their cloud" },
-  { feature: "Target user", tellet: "Anyone (non-dev OK)", paperclip: "Developers", mission: "Enterprises" },
   { feature: "Cost to start", tellet: "$0", paperclip: "$0", mission: "Contact sales" },
 ] as const;

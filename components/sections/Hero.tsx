@@ -50,10 +50,10 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
         >
-          Describe your business. AI agents run it for you.
+          Describe your business. Get AI agents that email customers,
           <br className="hidden sm:block" />
-          Customer support, marketing, operations —{" "}
-          <span className="text-text-primary font-medium">all automated.</span>
+          delegate tasks to each other, and run on{" "}
+          <span className="text-text-primary font-medium">autopilot.</span>
         </motion.p>
 
         {/* Dual CTA */}

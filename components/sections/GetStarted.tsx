@@ -35,11 +35,11 @@ export function GetStarted() {
               </div>
               <div className="flex items-start gap-3">
                 <span className="w-6 h-6 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</span>
-                <p className="text-sm text-text-secondary">AI generates your agent team instantly</p>
+                <p className="text-sm text-text-secondary">AI generates agents with email, delegation, and scheduling</p>
               </div>
               <div className="flex items-start gap-3">
                 <span className="w-6 h-6 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</span>
-                <p className="text-sm text-text-secondary">Start chatting with your AI agents</p>
+                <p className="text-sm text-text-secondary">Embed the widget on your site, agents go to work</p>
               </div>
               <a
                 href="/login"

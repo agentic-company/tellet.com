@@ -5,26 +5,24 @@ import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { FadeUp } from "@/components/animations/FadeUp";
 
 const lines = [
-  { text: "$ npx @tellet/create", type: "command" },
+  { text: "  You: \"I run a coffee shop called Sunny Coffee\"", type: "command" },
   { text: "", type: "blank" },
-  { text: "  ? What would you like to do?", type: "prompt" },
-  { text: "  > New — Build a new AI company", type: "input" },
-  { text: "", type: "blank" },
-  { text: "  ? Deployment mode:", type: "prompt" },
-  { text: "  > Cloud — Railway ($5/mo)", type: "input" },
-  { text: "", type: "blank" },
-  { text: "  ? What's your company name?", type: "prompt" },
-  { text: "  > Sunny Coffee", type: "input" },
-  { text: "", type: "blank" },
-  { text: "  Generating your AI team and website...", type: "spinner" },
+  { text: "  Generating your AI team...", type: "spinner" },
   { text: "", type: "blank" },
   { text: "  Your team:", type: "success" },
   { text: "  Barista  CS  ·  Roaster  Marketing  ·  Grinder  Sales", type: "agent" },
-  { text: "  Your website:", type: "success" },
-  { text: '  "Coffee worth waking up for"', type: "agent" },
   { text: "", type: "blank" },
-  { text: "  ✓ Project created!", type: "success" },
-  { text: "  docker compose up → localhost:3000", type: "success" },
+  { text: "  What they can do:", type: "success" },
+  { text: "  ✓ Answer customers via chat & email", type: "agent" },
+  { text: "  ✓ Delegate tasks to each other", type: "agent" },
+  { text: "  ✓ Run scheduled automations", type: "agent" },
+  { text: "  ✓ Search your knowledge base", type: "agent" },
+  { text: "", type: "blank" },
+  { text: "  Embed on your site:", type: "success" },
+  { text: "  <script src=\"tellet.com/widget.js\"></script>", type: "agent" },
+  { text: "", type: "blank" },
+  { text: "  ✓ Your AI company is live!", type: "success" },
+  { text: "  tellet.com/sunny-coffee/dashboard", type: "success" },
 ] as const;
 
 const typeColors: Record<string, string> = {
@@ -45,7 +43,7 @@ export function TerminalDemo() {
           See it in action
         </h2>
         <p className="text-text-secondary text-lg text-center max-w-2xl mx-auto mb-12">
-          One command. A few questions. Your AI company is live.
+          One sentence. AI builds your team. They start working.
         </p>
       </FadeUp>
 

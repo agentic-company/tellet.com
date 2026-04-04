@@ -13,13 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "tellet — Your AI Team",
+  title: "tellet — AI agents that run your business",
   description:
-    "The AI Agentic Company platform for solo founders. Build your AI workforce that actually runs your business.",
+    "Describe your business, get an AI team that emails customers, schedules tasks, and delegates work to each other. Free to start.",
   openGraph: {
-    title: "tellet — Your AI Team",
+    title: "tellet — AI agents that run your business",
     description:
-      "The AI Agentic Company platform for solo founders. Build your AI workforce that actually runs your business.",
+      "Describe your business, get an AI team that emails customers, schedules tasks, and delegates work to each other. Free to start.",
     type: "website",
   },
 };
