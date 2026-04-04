@@ -1,6 +1,5 @@
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createServerSupabase, createServiceSupabase } from "@/lib/supabase/server";
 import { generatePKCE, getAuthURL } from "@/lib/openrouter/pkce";
-import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
   const { company_id } = await request.json();
@@ -20,25 +19,26 @@ export async function POST(request: Request) {
 
   const { verifier, challenge } = generatePKCE();
 
-  // Store verifier + company_id in a cookie for the callback
-  const cookieStore = await cookies();
-  cookieStore.set("or_verifier", verifier, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    maxAge: 600, // 10 minutes
-    path: "/",
-  });
-  cookieStore.set("or_company_id", company_id, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    maxAge: 600,
-    path: "/",
-  });
+  // Store verifier in company config (more reliable than cookies across redirects)
+  const admin = createServiceSupabase();
+  const { data: company } = await admin
+    .from("companies")
+    .select("config")
+    .eq("id", company_id)
+    .single();
+
+  await admin
+    .from("companies")
+    .update({
+      config: {
+        ...((company?.config as Record<string, unknown>) || {}),
+        _or_verifier: verifier,
+      },
+    })
+    .eq("id", company_id);
 
   const origin = request.headers.get("origin") || "https://tellet.com";
-  const callbackUrl = `${origin}/api/openrouter/callback`;
+  const callbackUrl = `${origin}/api/openrouter/callback?company_id=${company_id}`;
   const authUrl = getAuthURL(callbackUrl, challenge);
 
   return Response.json({ url: authUrl });
