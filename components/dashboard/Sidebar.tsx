@@ -19,7 +19,6 @@ export function Sidebar({ companyName, slug }: { companyName: string; slug: stri
     <aside className="w-56 border-r border-border bg-bg-primary flex flex-col h-full">
       <Link href={`/${slug}/dashboard`} className="block p-5 hover:bg-bg-secondary/50 transition-colors">
         <span className="text-lg font-bold tracking-tight">{companyName}</span>
-        <p className="text-[11px] text-text-tertiary mt-0.5">Powered by tellet</p>
       </Link>
       <nav className="flex-1 px-3 space-y-0.5">
         {nav.map((item) => {
@@ -43,6 +42,9 @@ export function Sidebar({ companyName, slug }: { companyName: string; slug: stri
           );
         })}
       </nav>
+      <div className="px-5 py-4 border-t border-border">
+        <p className="text-[11px] text-text-tertiary">Powered by <span className="text-text-secondary">tel</span><span className="text-accent">let</span></p>
+      </div>
     </aside>
   );
 }
