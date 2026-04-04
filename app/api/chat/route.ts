@@ -1,6 +1,6 @@
 import { createServerSupabase, createServiceSupabase } from "@/lib/supabase/server";
 import { streamAgentWithTools } from "@/lib/engine";
-import { searchKnowledge } from "@/lib/mcp/knowledge";
+import { getToolsForRole } from "@/lib/actions";
 
 export async function POST(request: Request) {
   const { message, agent_id, conversation_id, company_id } =
@@ -66,24 +66,8 @@ export async function POST(request: Request) {
     content: m.content,
   }));
 
-  // Built-in tools
-  const builtinTools = [
-    {
-      name: "search_knowledge",
-      description:
-        "Search the company knowledge base for product info, policies, and FAQ",
-      input_schema: {
-        type: "object" as const,
-        properties: {
-          query: { type: "string", description: "Search query" },
-        },
-        required: ["query"],
-      },
-      execute: async (input: Record<string, unknown>) => {
-        return searchKnowledge(input.query as string, company_id);
-      },
-    },
-  ];
+  // Role-based tools
+  const builtinTools = getToolsForRole(agent.role, company_id);
 
   // Stream with tool use
   const stream = await streamAgentWithTools({
