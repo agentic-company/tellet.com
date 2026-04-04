@@ -1,5 +1,8 @@
 import { ComponentType } from "react";
 import { DefaultTemplate } from "./default";
+import { GradientTemplate } from "./gradient";
+import { MinimalTemplate } from "./minimal";
+import { BoldTemplate } from "./bold";
 
 export interface HomepageConfig {
   enabled: boolean;
@@ -40,12 +43,27 @@ export const TEMPLATES: TemplateInfo[] = [
   {
     id: "default",
     name: "Classic",
-    description: "Clean layout with hero, team section, and contact info",
+    description: "Clean dark layout with structured sections",
     component: DefaultTemplate,
   },
-  // Future templates:
-  // { id: "minimal", name: "Minimal", description: "...", component: MinimalTemplate },
-  // { id: "bold", name: "Bold", description: "...", component: BoldTemplate },
+  {
+    id: "gradient",
+    name: "Gradient",
+    description: "Glowing gradients, glass morphism cards, futuristic feel",
+    component: GradientTemplate,
+  },
+  {
+    id: "minimal",
+    name: "Minimal",
+    description: "Light theme, elegant typography, generous whitespace",
+    component: MinimalTemplate,
+  },
+  {
+    id: "bold",
+    name: "Bold",
+    description: "Large type, vivid color blocks, high-impact design",
+    component: BoldTemplate,
+  },
 ];
 
 export function getTemplate(id: string): TemplateInfo {
