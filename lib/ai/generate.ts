@@ -60,7 +60,7 @@ export async function generateAgents(
     });
     const res = await client.chat.completions.create({
       model: "anthropic/claude-sonnet-4-6",
-      max_tokens: 8192,
+      max_tokens: 2048,
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: userMessage },
@@ -71,7 +71,7 @@ export async function generateAgents(
     const client = new Anthropic(apiKey ? { apiKey } : undefined);
     const message = await client.messages.create({
       model: "claude-sonnet-4-6",
-      max_tokens: 8192,
+      max_tokens: 2048,
       system: SYSTEM_PROMPT,
       messages: [{ role: "user", content: userMessage }],
     });
