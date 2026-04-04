@@ -1,7 +1,7 @@
 import { createServiceSupabase } from "@/lib/supabase/server";
 import { streamAgentWithTools } from "@/lib/engine";
 import { getToolsForRole } from "@/lib/actions";
-import { getCompanyApiKey } from "@/lib/tellet-db";
+import { getCompanyLLMConfig } from "@/lib/tellet-db";
 
 export async function POST(request: Request) {
   const { message, agent_id, company_id, session_id } = await request.json();
@@ -75,24 +75,29 @@ export async function POST(request: Request) {
     (t) => t.name === "search_knowledge"
   );
 
-  const apiKey = await getCompanyApiKey(company_id);
-  if (!apiKey) {
+  const llmConfig = await getCompanyLLMConfig(company_id);
+  if (!llmConfig) {
     return Response.json({ error: "Service not configured" }, { status: 503 });
   }
+
+  const model = llmConfig.provider === "openrouter"
+    ? `anthropic/${agent.model || "claude-haiku-4-5"}`
+    : (agent.model || "claude-haiku-4-5");
 
   const stream = await streamAgentWithTools({
     agent: {
       id: agent.id,
       name: agent.name,
       role: agent.role,
-      model: agent.model || "claude-haiku-4-5",
+      model,
       systemPrompt: agent.system_prompt || "",
       channels: ["widget"],
       tools: [],
     },
     messages,
     builtinTools,
-    apiKey,
+    apiKey: llmConfig.apiKey,
+    llmProvider: llmConfig.provider,
   });
 
   let fullResponse = "";

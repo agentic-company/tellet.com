@@ -1,7 +1,7 @@
 import { createServerSupabase, createServiceSupabase } from "@/lib/supabase/server";
 import { streamAgentWithTools } from "@/lib/engine";
 import { getToolsForRole } from "@/lib/actions";
-import { getCompanyApiKey } from "@/lib/tellet-db";
+import { getCompanyLLMConfig } from "@/lib/tellet-db";
 
 export async function POST(request: Request) {
   const { message, agent_id, conversation_id, company_id } =
@@ -69,14 +69,19 @@ export async function POST(request: Request) {
 
   // Role-based tools
   const builtinTools = getToolsForRole(agent.role, company_id);
-  const apiKey = await getCompanyApiKey(company_id);
+  const llmConfig = await getCompanyLLMConfig(company_id);
 
-  if (!apiKey) {
+  if (!llmConfig) {
     return Response.json(
-      { error: "API key not configured. Go to Settings to add your Anthropic API key." },
+      { error: "No LLM provider configured. Go to Settings to connect OpenRouter or add an API key." },
       { status: 400 }
     );
   }
+
+  // Map model names for OpenRouter (prefix with provider)
+  const model = llmConfig.provider === "openrouter"
+    ? `anthropic/${agent.model || "claude-haiku-4-5"}`
+    : (agent.model || "claude-haiku-4-5");
 
   // Stream with tool use
   const stream = await streamAgentWithTools({
@@ -84,14 +89,15 @@ export async function POST(request: Request) {
       id: agent.id,
       name: agent.name,
       role: agent.role,
-      model: agent.model || "claude-haiku-4-5",
+      model,
       systemPrompt: agent.system_prompt || "",
       channels: ["web"],
       tools: [],
     },
     messages,
     builtinTools,
-    apiKey,
+    apiKey: llmConfig.apiKey,
+    llmProvider: llmConfig.provider,
   });
 
   let fullResponse = "";

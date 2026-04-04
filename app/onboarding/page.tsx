@@ -34,11 +34,45 @@ export default function OnboardingPage() {
   const [companyName, setCompanyName] = useState("");
   const [description, setDescription] = useState("");
   const [apiKey, setApiKey] = useState("");
+  const [providerTab, setProviderTab] = useState<"openrouter" | "anthropic">("openrouter");
   const [result, setResult] = useState<OnboardingResult | null>(null);
   const [error, setError] = useState("");
 
   const handleSubmit = async () => {
-    if (!companyName.trim() || description.trim().length < 20 || !apiKey.trim()) return;
+    if (!companyName.trim() || description.trim().length < 20 || !apiKey.trim()) {
+      if (providerTab === "openrouter" && companyName.trim() && description.trim().length >= 20) {
+        // For OpenRouter: create company without agents first, redirect to OAuth
+        setStep("generating");
+        setError("");
+        try {
+          const res = await fetch("/api/onboarding", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ companyName, description, provider: "openrouter" }),
+          });
+          if (!res.ok) {
+            const data = await res.json();
+            throw new Error(data.error || "Something went wrong");
+          }
+          const data = await res.json();
+          // Redirect to OpenRouter OAuth
+          const connectRes = await fetch("/api/openrouter/connect", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ company_id: data.company.id }),
+          });
+          const connectData = await connectRes.json();
+          if (connectData.url) {
+            window.location.href = connectData.url;
+          }
+        } catch (e) {
+          setError(e instanceof Error ? e.message : "Something went wrong");
+          setStep("describe");
+        }
+        return;
+      }
+      return;
+    }
 
     setStep("generating");
     setError("");
@@ -130,36 +164,82 @@ export default function OnboardingPage() {
               </div>
 
               <div>
-                <label className="block text-sm text-text-secondary mb-1.5">
-                  Anthropic API Key
+                <label className="block text-sm text-text-secondary mb-2">
+                  LLM Provider
                 </label>
-                <input
-                  type="password"
-                  value={apiKey}
-                  onChange={(e) => setApiKey(e.target.value)}
-                  placeholder="sk-ant-api03-..."
-                  className="w-full rounded-lg bg-bg-secondary border border-border px-4 py-3 text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent font-mono text-sm"
-                />
-                <p className="text-xs text-text-tertiary mt-1">
-                  Get your key at{" "}
-                  <a
-                    href="https://console.anthropic.com/settings/keys"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-accent hover:underline"
+                <div className="flex gap-2 mb-3">
+                  <button
+                    type="button"
+                    onClick={() => setProviderTab("openrouter")}
+                    className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors cursor-pointer ${
+                      providerTab === "openrouter"
+                        ? "bg-accent text-white"
+                        : "bg-bg-secondary border border-border text-text-secondary hover:text-text-primary"
+                    }`}
                   >
-                    console.anthropic.com
-                  </a>
-                  . Your key is stored securely and only used for your agents.
-                </p>
+                    OpenRouter
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setProviderTab("anthropic")}
+                    className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors cursor-pointer ${
+                      providerTab === "anthropic"
+                        ? "bg-accent text-white"
+                        : "bg-bg-secondary border border-border text-text-secondary hover:text-text-primary"
+                    }`}
+                  >
+                    Anthropic Key
+                  </button>
+                </div>
+
+                {providerTab === "openrouter" ? (
+                  <p className="text-xs text-text-tertiary">
+                    Connect your OpenRouter account for 300+ models. You&apos;ll be redirected to authorize.{" "}
+                    <a
+                      href="https://openrouter.ai"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent hover:underline"
+                    >
+                      openrouter.ai
+                    </a>
+                  </p>
+                ) : (
+                  <>
+                    <input
+                      type="password"
+                      value={apiKey}
+                      onChange={(e) => setApiKey(e.target.value)}
+                      placeholder="sk-ant-api03-..."
+                      className="w-full rounded-lg bg-bg-secondary border border-border px-4 py-3 text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent font-mono text-sm"
+                    />
+                    <p className="text-xs text-text-tertiary mt-1">
+                      Get your key at{" "}
+                      <a
+                        href="https://console.anthropic.com/settings/keys"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-accent hover:underline"
+                      >
+                        console.anthropic.com
+                      </a>
+                    </p>
+                  </>
+                )}
               </div>
 
               <button
                 onClick={handleSubmit}
-                disabled={!companyName.trim() || description.trim().length < 20 || !apiKey.trim()}
+                disabled={
+                  !companyName.trim() ||
+                  description.trim().length < 20 ||
+                  (providerTab === "anthropic" && !apiKey.trim())
+                }
                 className="w-full rounded-lg bg-accent hover:bg-accent-hover px-4 py-3 text-sm font-medium text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               >
-                Generate my AI team
+                {providerTab === "openrouter"
+                  ? "Connect OpenRouter & generate team"
+                  : "Generate my AI team"}
               </button>
             </div>
           </div>

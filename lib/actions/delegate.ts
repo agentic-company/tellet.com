@@ -1,7 +1,7 @@
 import { createServiceSupabase } from "@/lib/supabase/server";
 import { streamAgentWithTools } from "@/lib/engine";
 import { getToolsForRole } from "./index";
-import { getCompanyApiKey } from "@/lib/tellet-db";
+import { getCompanyLLMConfig } from "@/lib/tellet-db";
 
 /**
  * Delegate a task to another agent in the same company.
@@ -42,7 +42,11 @@ export async function delegateToAgent(
       (t) => t.name !== "delegate_to_agent"
     );
 
-    const apiKey = await getCompanyApiKey(companyId);
+    const llmConfig = await getCompanyLLMConfig(companyId);
+
+    const model = llmConfig?.provider === "openrouter"
+      ? `anthropic/${target.model || "claude-haiku-4-5"}`
+      : (target.model || "claude-haiku-4-5");
 
     // Run the target agent
     const stream = await streamAgentWithTools({
@@ -50,14 +54,15 @@ export async function delegateToAgent(
         id: target.id,
         name: target.name,
         role: target.role,
-        model: target.model || "claude-haiku-4-5",
+        model,
         systemPrompt: target.system_prompt || "",
         channels: ["internal"],
         tools: [],
       },
       messages: [{ role: "user", content: task }],
       builtinTools: targetTools,
-      apiKey,
+      apiKey: llmConfig?.apiKey,
+      llmProvider: llmConfig?.provider,
     });
 
     // Collect response

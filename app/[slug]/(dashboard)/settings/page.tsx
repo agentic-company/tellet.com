@@ -1,6 +1,6 @@
 import { createServiceSupabase } from "@/lib/supabase/server";
 import { DeleteCompanyButton } from "@/components/dashboard/DeleteCompanyButton";
-import { ApiKeyManager } from "@/components/dashboard/ApiKeyManager";
+import { ProviderManager } from "@/components/dashboard/ProviderManager";
 
 export default async function SettingsPage({
   params,
@@ -48,10 +48,11 @@ export default async function SettingsPage({
       </div>
 
       <div className="rounded-xl border border-accent/20 bg-accent/5 p-6 space-y-3">
-        <h2 className="text-lg font-semibold">API Key</h2>
-        <ApiKeyManager
+        <h2 className="text-lg font-semibold">LLM Provider</h2>
+        <ProviderManager
           companyId={company.id}
-          hasKey={!!(company.config as Record<string, unknown>)?.anthropic_api_key}
+          currentProvider={((company.config as Record<string, unknown>)?.provider as string) || null}
+          hasAnthropicKey={!!(company.config as Record<string, unknown>)?.anthropic_api_key}
         />
       </div>
 

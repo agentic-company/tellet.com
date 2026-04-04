@@ -13,11 +13,21 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { companyName, description, apiKey } = await request.json();
+  const { companyName, description, apiKey, provider } = await request.json();
 
-  if (!companyName || !description || !apiKey) {
+  if (!companyName || !description) {
     return NextResponse.json(
-      { error: "Company name, description, and API key are required" },
+      { error: "Company name and description are required" },
+      { status: 400 }
+    );
+  }
+
+  // OpenRouter flow: create company only (agents generated after OAuth)
+  const isOpenRouter = provider === "openrouter";
+
+  if (!isOpenRouter && !apiKey) {
+    return NextResponse.json(
+      { error: "API key is required for Anthropic provider" },
       { status: 400 }
     );
   }
@@ -48,7 +58,9 @@ export async function POST(request: Request) {
       slug: finalSlug,
       description,
       owner_id: user.id,
-      config: { anthropic_api_key: apiKey },
+      config: isOpenRouter
+        ? { provider: "openrouter" }
+        : { anthropic_api_key: apiKey, provider: "anthropic" },
     })
     .select()
     .single();
@@ -59,6 +71,23 @@ export async function POST(request: Request) {
       { error: `Failed to create company: ${companyError.message}` },
       { status: 500 }
     );
+  }
+
+  // Add user as company member
+  await admin.from("company_members").insert({
+    company_id: company.id,
+    user_id: user.id,
+    role: "owner",
+  });
+
+  // OpenRouter: return company now, agents will be generated after OAuth callback
+  if (isOpenRouter) {
+    return NextResponse.json({
+      company: { id: company.id, slug: finalSlug, name: companyName },
+      agents: [],
+      industry: "",
+      summary: "Connect OpenRouter to start using your AI team.",
+    });
   }
 
   // Generate agents with AI

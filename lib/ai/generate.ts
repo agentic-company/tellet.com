@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 
 export interface GeneratedAgent {
   id: string;
@@ -45,23 +46,38 @@ Output ONLY valid JSON:
 export async function generateAgents(
   companyName: string,
   businessDescription: string,
-  apiKey?: string
+  apiKey?: string,
+  provider?: "anthropic" | "openrouter"
 ): Promise<GenerateResult> {
-  const client = new Anthropic(apiKey ? { apiKey } : undefined);
-  const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
-    max_tokens: 8192,
-    system: SYSTEM_PROMPT,
-    messages: [
-      {
-        role: "user",
-        content: `Company: ${companyName}\n\nBusiness Description: ${businessDescription}`,
-      },
-    ],
-  });
+  const userMessage = `Company: ${companyName}\n\nBusiness Description: ${businessDescription}`;
 
-  const text =
-    message.content[0].type === "text" ? message.content[0].text : "";
+  let text: string;
+
+  if (provider === "openrouter" && apiKey) {
+    const client = new OpenAI({
+      baseURL: "https://openrouter.ai/api/v1",
+      apiKey,
+    });
+    const res = await client.chat.completions.create({
+      model: "anthropic/claude-sonnet-4-6",
+      max_tokens: 8192,
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: userMessage },
+      ],
+    });
+    text = res.choices[0]?.message?.content || "";
+  } else {
+    const client = new Anthropic(apiKey ? { apiKey } : undefined);
+    const message = await client.messages.create({
+      model: "claude-sonnet-4-6",
+      max_tokens: 8192,
+      system: SYSTEM_PROMPT,
+      messages: [{ role: "user", content: userMessage }],
+    });
+    text = message.content[0].type === "text" ? message.content[0].text : "";
+  }
+
   const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/) || [null, text];
   const jsonStr = (jsonMatch[1] || text).trim();
 

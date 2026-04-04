@@ -16,6 +16,7 @@ export interface AgentStreamOptions {
   messages: { role: "user" | "assistant"; content: string }[];
   builtinTools?: BuiltinTool[];
   apiKey?: string;
+  llmProvider?: "anthropic" | "openrouter";
   onToolStart?: (toolName: string) => void;
   onToolEnd?: (toolName: string) => void;
 }
@@ -23,8 +24,7 @@ export interface AgentStreamOptions {
 export async function streamAgentWithTools(
   options: AgentStreamOptions
 ): Promise<ReadableStream<StreamChunk>> {
-  const { agent, messages, builtinTools = [], apiKey, onToolStart, onToolEnd } = options;
-  const provider = agent.provider || "anthropic";
+  const { agent, messages, builtinTools = [], apiKey, llmProvider, onToolStart, onToolEnd } = options;
 
   // Collect tools: builtin + MCP (deduplicate by name)
   const mcpTools = await getToolsForAgent(agent.id);
@@ -38,7 +38,11 @@ export async function streamAgentWithTools(
     ...mcpTools.filter((t) => !builtinNames.has(t.name)),
   ];
 
-  if (provider === "openai") {
+  // OpenRouter uses OpenAI-compatible API
+  if (llmProvider === "openrouter") {
+    return streamOpenAI(agent, messages, allTools, builtinTools, apiKey, "https://openrouter.ai/api/v1");
+  }
+  if (agent.provider === "openai") {
     return streamOpenAI(agent, messages, allTools, builtinTools);
   }
   return streamAnthropic(agent, messages, allTools, builtinTools, onToolStart, onToolEnd, apiKey);
@@ -131,11 +135,16 @@ async function streamOpenAI(
   agent: AgentConfig,
   messages: { role: "user" | "assistant"; content: string }[],
   tools: Anthropic.Tool[],
-  builtinTools: BuiltinTool[]
+  builtinTools: BuiltinTool[],
+  apiKey?: string,
+  baseURL?: string
 ): Promise<ReadableStream<StreamChunk>> {
   let _client: OpenAI | null = null;
   function getClient() {
-    if (!_client) _client = new OpenAI();
+    if (!_client) _client = new OpenAI({
+      ...(apiKey ? { apiKey } : {}),
+      ...(baseURL ? { baseURL } : {}),
+    });
     return _client;
   }
 

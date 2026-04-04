@@ -1,7 +1,7 @@
 import { createServiceSupabase } from "@/lib/supabase/server";
 import { streamAgentWithTools } from "@/lib/engine";
 import { getToolsForRole } from "@/lib/actions";
-import { getCompanyApiKey } from "@/lib/tellet-db";
+import { getCompanyLLMConfig } from "@/lib/tellet-db";
 
 /**
  * Calculate the next run time from a cron expression.
@@ -85,11 +85,15 @@ export async function executeScheduledTask(taskId: string): Promise<{
   try {
     // Build tools for this agent's role
     const builtinTools = getToolsForRole(agent.role, task.company_id);
-    const apiKey = await getCompanyApiKey(task.company_id);
+    const llmConfig = await getCompanyLLMConfig(task.company_id);
 
-    if (!apiKey) {
-      throw new Error("API key not configured for this company");
+    if (!llmConfig) {
+      throw new Error("LLM provider not configured for this company");
     }
+
+    const model = llmConfig.provider === "openrouter"
+      ? `anthropic/${agent.model || "claude-haiku-4-5"}`
+      : (agent.model || "claude-haiku-4-5");
 
     // Stream agent response
     const stream = await streamAgentWithTools({
@@ -97,14 +101,15 @@ export async function executeScheduledTask(taskId: string): Promise<{
         id: agent.id,
         name: agent.name,
         role: agent.role,
-        model: agent.model || "claude-haiku-4-5",
+        model,
         systemPrompt: agent.system_prompt || "",
         channels: ["scheduled"],
         tools: [],
       },
       messages: [{ role: "user", content: task.prompt }],
       builtinTools,
-      apiKey,
+      apiKey: llmConfig.apiKey,
+      llmProvider: llmConfig.provider,
     });
 
     // Collect full response
